@@ -98,16 +98,6 @@ CREATE TABLE Fitness_Goal (
     FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
 );
 
-CREATE TABLE Exercise (
-    Name VARCHAR(255),
-    Reps INT,
-    Sets INT,
-    Member_Id INT,
-    Session_Id INT,
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id),
-    FOREIGN KEY (Session_Id) REFERENCES Training_Session(Session_Id)
-);
-
 CREATE TABLE Training_Session (
     Session_Id SERIAL PRIMARY KEY,
     Status VARCHAR(255),
@@ -116,6 +106,16 @@ CREATE TABLE Training_Session (
     Member_Id INT,
     FOREIGN KEY (Trainer_Id) REFERENCES Trainers(Trainer_Id),
     FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
+);
+
+CREATE TABLE Exercise (
+    Name VARCHAR(255),
+    Reps INT,
+    Sets INT,
+    Member_Id INT,
+    Session_Id INT,
+    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id),
+    FOREIGN KEY (Session_Id) REFERENCES Training_Session(Session_Id)
 );
 
 CREATE TABLE Organize (
