@@ -46,7 +46,7 @@ def show_main_window(user_type, first_name, last_name):
     window.setFixedSize(300, 200)
 
     gui_layout = QVBoxLayout()
-    welcome_label = QLabel(f"Hello {first_name} {last_name}.")
+    welcome_label = QLabel(f"Hello {user_type}, {first_name} {last_name}.")
     gui_layout.addWidget(welcome_label)
 
     #add dashboard
@@ -155,8 +155,13 @@ if user_type_dialog.exec_() == QDialog.Accepted:
 
     # set names from the dialog and pass it to main window
     login_register_dialog = loginRegisterPopup.LoginRegisterPopup(user_type)
-    if login_register_dialog.exec_() == QDialog.Accepted:
 
+     # Connect the register_button to the register method of login_register_dialog
+    register_button = login_register_dialog.findChild(QPushButton, "Register")
+    if register_button is not None:
+        register_button.clicked.connect(login_register_dialog.register)
+    
+    if login_register_dialog.exec_() == QDialog.Accepted:
         first_name = login_register_dialog.first_name.text()
         last_name = login_register_dialog.last_name.text()
 
