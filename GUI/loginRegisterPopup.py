@@ -42,5 +42,33 @@ class LoginRegisterPopup(QDialog):
     def register(self):
         first_name = self.first_name.text()
         last_name = self.last_name.text()
-        # add new member to db
-        self.accept()
+        
+        registration_dialog = QDialog()
+        layout = QVBoxLayout()
+
+        self.email = QLineEdit()
+        self.tallness = QLineEdit()
+        self.weight = QLineEdit()
+
+        layout.addWidget(QLabel("Height:"))
+        layout.addWidget(self.tallness)
+        layout.addWidget(QLabel("Weight:"))
+        layout.addWidget(self.weight)
+        layout.addWidget(QLabel("Email:"))
+        layout.addWidget(self.email)
+
+        register_button = QPushButton("Register Now!")
+        register_button.clicked.connect(lambda: self.addMember(registration_dialog,self))  # Pass registration_dialog instance
+        layout.addWidget(register_button)
+
+        registration_dialog.setLayout(layout)
+        registration_dialog.setWindowTitle("Registration Form")
+
+        registration_dialog.exec_()
+        # self.accept()
+
+    def addMember(self, registration_dialog, login_dialog):
+        # Add a user to the table
+
+        registration_dialog.accept()
+        login_dialog.accept()
