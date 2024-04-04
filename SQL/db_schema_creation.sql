@@ -1,126 +1,126 @@
 --CREATE DATABASE GymDB;
 CREATE TABLE Admins (
-    Admin_Id SERIAL PRIMARY KEY,
-    FirstName VARCHAR(255) NOT NULL,
-    LastName VARCHAR(255) NOT NULL,
-    Email VARCHAR(255) NOT NULL,
-    PhoneNumber VARCHAR(255) NOT NULL
+    admin_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Members (
-    Member_Id SERIAL PRIMARY KEY,
-    FirstName VARCHAR(255) NOT NULL,
-    LastName VARCHAR(255) NOT NULL,
-    Phone_Number VARCHAR(255),
-    Email VARCHAR(255) NOT NULL,
-    Height INT,
-    Current_Weight INT,
-    Amount FLOAT NOT NULL,
-    Description VARCHAR(255),
-    Payment_Status VARCHAR(255)
+    member_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    height INT,
+    current_weight INT,
+    amount FLOAT NOT NULL,
+    description VARCHAR(255),
+    payment_status VARCHAR(255)
 );
 
 CREATE TABLE Equipment (
-    Equipment_Id SERIAL PRIMARY KEY,
-    Equipment_Name VARCHAR(255) NOT NULL,
-    Maintenance_Status VARCHAR(255)
+    equipment_id SERIAL PRIMARY KEY,
+    equipment_name VARCHAR(255) NOT NULL,
+    maintenance_status VARCHAR(255)
 );
 
 CREATE TABLE Trainers (
-    Trainer_Id SERIAL PRIMARY KEY,
-    FirstName VARCHAR(255) NOT NULL,
-    LastName VARCHAR(255) NOT NULL,
-    Phone_Number VARCHAR(255),
-    Email VARCHAR(255) NOT NULL,
-    Status VARCHAR(255)
+    trainer_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    status VARCHAR(255)
 );
 
 CREATE TABLE Room_Bookings (
-    Booking_Id SERIAL PRIMARY KEY,
-    Status VARCHAR(255),
-    Purpose VARCHAR(255),
-    Room_Number INT NOT NULL,
-    Booking_Time TIMESTAMP
+    booking_id SERIAL PRIMARY KEY,
+    status VARCHAR(255),
+    purpose VARCHAR(255),
+    room_number INT NOT NULL,
+    booking_time TIMESTAMP
 );
 
 CREATE TABLE Class_Schedule (
-    Schedule_Id SERIAL PRIMARY KEY,
-    Room_Number INT NOT NULL,
-    Status VARCHAR(255),
-    Class_Time TIMESTAMP
+    schedule_id SERIAL PRIMARY KEY,
+    room_number INT NOT NULL,
+    status VARCHAR(255),
+    class_time TIMESTAMP
 );
 
 CREATE TABLE Monitor (
-    Admin_Id INT,
-    Equipment_Id INT,
-    FOREIGN KEY (Admin_Id) REFERENCES Admins(Admin_Id),
-    FOREIGN KEY (Equipment_Id) REFERENCES Equipment(Equipment_Id)
+    admin_id INT,
+    equipment_id INT,
+    FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
+    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)
 );
 
 CREATE TABLE Manages (
-    Admin_Id INT,
-    Booking_Id INT,
-    FOREIGN KEY (Admin_Id) REFERENCES Admins(Admin_Id),
-    FOREIGN KEY (Booking_Id) REFERENCES Room_Bookings(Booking_Id)
+    admin_id INT,
+    booking_id INT,
+    FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
+    FOREIGN KEY (booking_id) REFERENCES Room_Bookings(booking_id)
 );
 
 CREATE TABLE Updates (
-    Admin_Id INT,
-    Schedule_Id INT,
-    FOREIGN KEY (Admin_Id) REFERENCES Admins(Admin_Id),
-    FOREIGN KEY (Schedule_Id) REFERENCES Class_Schedule(Schedule_Id)
+    admin_id INT,
+    schedule_id INT,
+    FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
+    FOREIGN KEY (schedule_id) REFERENCES Class_Schedule(schedule_id)
 );
 
 CREATE TABLE Classes (
-    Class_ID SERIAL PRIMARY KEY,
-    Class_Time TIMESTAMP,
-    Class_Name VARCHAR(255),
-    Schedule_Id INT,
-    FOREIGN KEY (Schedule_Id) REFERENCES Class_Schedule(Schedule_Id)
+    class_id SERIAL PRIMARY KEY,
+    class_time TIMESTAMP,
+    class_name VARCHAR(255),
+    schedule_id INT,
+    FOREIGN KEY (schedule_id) REFERENCES Class_Schedule(schedule_id)
 );
 
 CREATE TABLE Oversees (
-    Admin_Id INT,
-    Member_Id INT,
-    FOREIGN KEY (Admin_Id) REFERENCES Admins(Admin_Id),
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
+    admin_id INT,
+    member_id INT,
+    FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Achievement (
-    Member_Id INT,
-    Achievement VARCHAR(255),
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
+    member_id INT,
+    achievement VARCHAR(255),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Fitness_Goal (
-    Member_Id INT,
-    Fitness_Goal VARCHAR(255),
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
+    member_id INT,
+    fitness_goal VARCHAR(255),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Training_Session (
-    Session_Id SERIAL PRIMARY KEY,
-    Status VARCHAR(255),
-    Session_Time TIMESTAMP,
-    Trainer_Id INT,
-    Member_Id INT,
-    FOREIGN KEY (Trainer_Id) REFERENCES Trainers(Trainer_Id),
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id)
+    session_id SERIAL PRIMARY KEY,
+    status VARCHAR(255),
+    session_time TIMESTAMP,
+    trainer_id INT,
+    member_id INT,
+    FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Exercise (
-    Name VARCHAR(255),
-    Reps INT,
-    Sets INT,
-    Member_Id INT,
-    Session_Id INT,
-    FOREIGN KEY (Member_Id) REFERENCES Members(Member_Id),
-    FOREIGN KEY (Session_Id) REFERENCES Training_Session(Session_Id)
+    name VARCHAR(255),
+    reps INT,
+    sets INT,
+    member_id INT,
+    session_id INT,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (session_id) REFERENCES Training_Session(session_id)
 );
 
 CREATE TABLE Organize (
-    Trainer_Id INT,
-    Class_Id INT,
-    FOREIGN KEY (Trainer_Id) REFERENCES Trainers(Trainer_Id),
-    FOREIGN KEY (Class_Id) REFERENCES Classes(Class_ID)
+    trainer_id INT,
+    class_id INT,
+    FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id),
+    FOREIGN KEY (class_id) REFERENCES Classes(class_id)
 );
