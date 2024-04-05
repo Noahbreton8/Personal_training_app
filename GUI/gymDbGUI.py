@@ -1,7 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QRadioButton, QMessageBox
 import psycopg2
-import userSelectionPopup , loginRegisterPopup
+import userSelectionPopup , loginRegisterPopup, scheduleClassesPopup, viewMembersPopup
+from monitorEquipmentPopup import monitorEquipmentPopup, manageRoomsPopup
+from scheduleClassesPopup import scheduleClassesPopup, registerClassesPopup , updateClassesPopup
+from trainingSessionsPopup import bookTrainingPopup, setAvail
+from viewMembersPopup import viewMembersPopup, manageProfilePopup
+from billingAndPaymentPopup import manageBilingPopup
 
 #posgresql credentials
 DATABASE_NAME = ""
@@ -59,14 +64,18 @@ def show_main_window(user_type, first_name, last_name):
     if user_type == "member":
         member_group = QGroupBox("Features")
         profile_management_button = QPushButton("Profile Management")
-        class_schedule_button = QPushButton("Schedule/Class Management")
+        class_schedule_button = QPushButton("Register for Classes")
+        book_training_button = QPushButton("Book Training")
 
         member_functions_layout = QVBoxLayout()
 
         profile_management_button.clicked.connect(profile_management)
         member_functions_layout.addWidget(profile_management_button)
 
-        class_schedule_button.clicked.connect(schedule_management_member)
+        book_training_button.clicked.connect(book_training)
+        member_functions_layout.addWidget(book_training_button)
+
+        class_schedule_button.clicked.connect(book_classes)
         member_functions_layout.addWidget(class_schedule_button)
 
         member_group.setLayout(member_functions_layout)
@@ -80,7 +89,7 @@ def show_main_window(user_type, first_name, last_name):
 
         trainer_layout = QVBoxLayout()
 
-        class_schedule_button.clicked.connect(schedule_management)
+        class_schedule_button.clicked.connect(set_avail)
         trainer_layout.addWidget(class_schedule_button)
 
         view_profiles_button.clicked.connect(member_profile_viewing)
@@ -122,29 +131,53 @@ def show_main_window(user_type, first_name, last_name):
 #member funciton
 def profile_management():
     print("Profile Management")
+    dialog = manageProfilePopup()
+    dialog.exec_()
 
-def schedule_management_member():
-    print("Personal training Management/ Classes")
+def book_classes():
+    print("Register for Classes")
+    dialog = registerClassesPopup()
+    dialog.exec_()
 
+def book_training():
+    dialog = bookTrainingPopup()
+    dialog.exec_()
+    
 # trainer functiom
 def member_profile_viewing():
-    print("Member Profile Viewing")
+    dialog = viewMembersPopup()
+    dialog.exec_()
 
-def schedule_management():
-    print("Schedule Management")
+def set_avail():
+    print("Set availability")
+    dialog = setAvail()
+    dialog.exec_()
+
+def schedule_classes():
+    print("Schedule Classes")
+    dialog = scheduleClassesPopup()
+    dialog.exec_()
 
 # admin functions
 def room_booking_management():
     print("Room Booking Management")
+    dialog = manageRoomsPopup()
+    dialog.exec_()
 
 def equipment_maintenance_monitoring():
     print("Equipment Maintenance Monitoring")
+    dialog = monitorEquipmentPopup()
+    dialog.exec_()
 
 def class_schedule_updating():
     print("Class Schedule Updating")
+    dialog = updateClassesPopup()
+    dialog.exec_()
 
 def billing_and_payment_processing():
     print("Billing and Payment Processing")
+    dialog = manageBilingPopup()
+    dialog.exec_()
 
 app = QApplication(sys.argv)
 
