@@ -48,7 +48,7 @@ def execute_query(query, params= None):
 def show_main_window(user_type, first_name, last_name):
     window = QWidget()
     window.setWindowTitle("Gym DB GUI")
-    window.setFixedSize(300, 200)
+    window.setFixedWidth(600)
 
     gui_layout = QVBoxLayout()
     welcome_label = QLabel(f"Hello {user_type}, {first_name} {last_name}.")
@@ -58,8 +58,18 @@ def show_main_window(user_type, first_name, last_name):
 
         #add dashboard
         dashboard = QGroupBox("Dashboard")
-        
+
+        #add a Qlabel for every exercise
+        dashboard_layout = QVBoxLayout()
+        dashboard_layout.addWidget(QLabel("Exercise1:"))
+        dashboard_layout.addWidget(QLabel("Exercise2:"))
+        dashboard_layout.addWidget(QLabel("Exercise3:"))
+
+        dashboard_layout.addWidget(QLabel("Recent Achievment: Nothing"))
+        dashboard_layout.addWidget(QLabel("Current Weight: 500lbs"))
+
         #add layout to dashboard
+        dashboard.setLayout(dashboard_layout)
 
         gui_layout.addWidget(dashboard)
 
