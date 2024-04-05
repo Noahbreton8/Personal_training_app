@@ -54,14 +54,15 @@ def show_main_window(user_type, first_name, last_name):
     welcome_label = QLabel(f"Hello {user_type}, {first_name} {last_name}.")
     gui_layout.addWidget(welcome_label)
 
-    #add dashboard
-    dashboard = QGroupBox("Dashboard")
-    
-    #add layout to dashboard
-
-    gui_layout.addWidget(dashboard)
-
     if user_type == "member":
+
+        #add dashboard
+        dashboard = QGroupBox("Dashboard")
+        
+        #add layout to dashboard
+
+        gui_layout.addWidget(dashboard)
+
         member_group = QGroupBox("Features")
         profile_management_button = QPushButton("Profile Management")
         class_schedule_button = QPushButton("Register for Classes")
@@ -189,7 +190,7 @@ if user_type_dialog.exec_() == QDialog.Accepted:
     # set names from the dialog and pass it to main window
     login_register_dialog = loginRegisterPopup.LoginRegisterPopup(user_type)
 
-     # Connect the register_button to the register method of login_register_dialog
+    # Connect the register_button to the register method of login_register_dialog
     register_button = login_register_dialog.findChild(QPushButton, "Register")
     if register_button is not None:
         register_button.clicked.connect(login_register_dialog.register)

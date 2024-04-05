@@ -18,11 +18,25 @@ class UserTypeSelectionPopup(QDialog):
         layout.addWidget(self.trainer_button)
         layout.addWidget(self.member_button)
 
-        select_button = QPushButton("Select")
-        select_button.clicked.connect(self.select_user_type)
-        layout.addWidget(select_button)
+        self.select_button = QPushButton("Select")
+        self.select_button.clicked.connect(self.select_user_type)
+        layout.addWidget(self.select_button)
 
         self.setLayout(layout)
+
+        self.update_select_button_state()
+
+        # turn select on if selected type
+        self.admin_button.toggled.connect(self.update_select_button_state)
+        self.trainer_button.toggled.connect(self.update_select_button_state)
+        self.member_button.toggled.connect(self.update_select_button_state)
+
+    def update_select_button_state(self):
+        # Enable the button only if one of the radio buttons is selected
+        self.select_button.setDisabled(not (self.admin_button.isChecked() or
+                                            self.trainer_button.isChecked() or
+                                            self.member_button.isChecked()))
+
 
     def select_user_type(self):
         if self.admin_button.isChecked():
