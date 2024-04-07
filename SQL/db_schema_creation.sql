@@ -112,10 +112,8 @@ CREATE TABLE Exercise (
     name VARCHAR(255),
     reps INT,
     sets INT,
-    member_id INT,
-    session_id INT,
+    member_id INT NOT NULL,
     FOREIGN KEY (member_id) REFERENCES Members(member_id),
-    FOREIGN KEY (session_id) REFERENCES Training_Session(session_id)
 );
 
 CREATE TABLE Organize (
