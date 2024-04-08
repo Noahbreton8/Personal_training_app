@@ -1,4 +1,3 @@
---CREATE DATABASE GymDB;
 CREATE TABLE Admins (
     admin_id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
