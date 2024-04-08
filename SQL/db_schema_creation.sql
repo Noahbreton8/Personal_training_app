@@ -112,7 +112,7 @@ CREATE TABLE Exercise (
     reps INT,
     sets INT,
     member_id INT NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Organize (

@@ -5,7 +5,7 @@ import psycopg2
 #posgresql credentials
 DATABASE_NAME = "finalProject"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+DATABASE_PASSWORD = "student"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -48,18 +48,23 @@ class functions:
 
     ### 1
     def memberRegistration(self, firstName, lastName, phoneNumber, email, height = None, weight = None):
-        query = "SELECT firstName, lastName, phone_number, email FROM members"
+        query = "SELECT first_Name, last_Name, phone_number, email FROM members"
         rows = self.execute_query(query)
-        for i in range(len(rows)):
-            if rows[i][0] == firstName and rows[i][1] == lastName and rows[i][2] == str(phoneNumber) and rows[i][3] == email:
-                #maybe turn into pop up?
-                print("member already exists")
-                return -1
+
+        if rows == -1:
+            print("failed")
+            return
+
+        for row in rows:
+            if row[0] == firstName and row[1] == lastName and row[2] == str(phoneNumber) and row[3] == email:
+                # maybe turn into pop up?
+                print("Member already exists or logging in")
+                return 0
         
-        addMember = "INSERT INTO members (firstName, lastName, phone_number, email, amount) VALUES (%s, %s, %s, %s, %s)"
+        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
         # 0 is the amount due and should be 0 initially
-        parameters = (firstName, lastName, phoneNumber, email, 0)
+        parameters = (firstName, lastName, phoneNumber, email, 0, height, weight)
         result = self.execute_query(addMember, parameters)
         if result == -1:
             print("could not insert")
@@ -214,8 +219,8 @@ class functions:
         for i in range(len(rows)):
             if rows[i][0] == firstName and rows[i][1] == lastName and rows[i][2] == str(phoneNumber) and rows[i][3] == email:
                 #maybe turn into pop up?
-                print("trainer already exists")
-                return -1
+                print("successful login")
+                return 0
         
         addTrainer = "INSERT INTO trainers (firstName, lastName, phone_number, email, status) VALUES (%s, %s, %s, %s, %s)"
 
