@@ -47,24 +47,26 @@ class functions:
     ####
 
     ### 1
-    def memberRegistration(self, firstName, lastName, phoneNumber, email, height = None, weight = None):
-        query = "SELECT first_Name, last_Name, phone_number, email FROM members"
+    def memberRegistration(self, firstName, lastName, phoneNumber, email, height=None, weight=None):
+        query = "SELECT member_id, first_Name, last_Name, phone_number, email FROM members"
         rows = self.execute_query(query)
 
         if rows == -1:
-            print("failed")
-            return
+            print("Failed to execute query")
+            return -1
 
         for row in rows:
-            if row[0] == firstName and row[1] == lastName and row[2] == str(phoneNumber) and row[3] == email:
-                # maybe turn into pop up?
+            if (row[1], row[2], str(row[3]), row[4]) == (firstName, lastName, str(phoneNumber), email):
                 print("Member already exists or logging in")
-                return 0
+                return row[0]
         
-        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight, description) VALUES (%s, %s, %s, %s, %s, %s, %s, '')"
 
         # 0 is the amount due and should be 0 initially
-        parameters = (firstName, lastName, phoneNumber, email, 0, height, weight)
+        if(weight == '0' and height == '0'):
+            return -2
+        
+        parameters = (firstName, lastName, phoneNumber, email, 0, height.text(), weight.text())
         result = self.execute_query(addMember, parameters)
         if result == -1:
             print("could not insert")
@@ -75,7 +77,7 @@ class functions:
     
     #2
     def updateFirstName(self, memberId, newName):
-        query = "UPDATE members SET firstName = %s WHERE member_id = '%s'"
+        query = "UPDATE members SET first_name = %s WHERE member_id = '%s'"
         parameters = (newName, memberId)
 
         result = self.execute_query(query, parameters)
@@ -88,7 +90,7 @@ class functions:
 
     #2
     def updateLastName(self, memberId, newName):
-        query = "UPDATE members SET lastName = %s WHERE member_id = '%s'"
+        query = "UPDATE members SET last_Name = %s WHERE member_id = '%s'"
         parameters = (newName, memberId)
 
         result = self.execute_query(query, parameters)
@@ -152,8 +154,8 @@ class functions:
         return result
     #2
     def addFitnessGoal(self, memberId, goal):
-        query = "INSERT INTO Fitness_Goal (member_id, fitness_goal) VALUES (%s, %s)"
-        parameters = (memberId, goal)
+        query = "UPDATE members SET description = %s WHERE member_id = '%s'"
+        parameters = (goal, memberId)
 
         result = self.execute_query(query, parameters)
         if result == -1:

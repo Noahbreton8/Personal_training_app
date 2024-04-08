@@ -7,43 +7,8 @@ from scheduleClassesPopup import scheduleClassesPopup, registerClassesPopup , up
 from trainingSessionsPopup import bookTrainingPopup, setAvail
 from viewMembersPopup import viewMembersPopup, manageProfilePopup
 from billingAndPaymentPopup import manageBilingPopup
-
-#posgresql credentials
-DATABASE_NAME = ""
-DATABASE_USER = ""
-DATABASE_PASSWORD = ""
-DATABASE_HOST = ""
-DATABASE_PORT = ""
-
-def execute_query(query, params= None):
-    #connect to the database with the credentials above
-    conn = psycopg2.connect(
-        dbname=DATABASE_NAME,
-        user=DATABASE_USER,
-        password=DATABASE_PASSWORD,
-        host=DATABASE_HOST,
-        port=DATABASE_PORT)
-    
-    try:
-        cur = conn.cursor()
-        if params:
-            cur.execute(query, params)
-        else:
-            cur.execute(query)
-
-        #return the rows for printing get all students
-        if query.strip().lower().startswith("select"):
-            student_rows = cur.fetchall()
-            cur.close()
-            conn.close()
-            return student_rows
-        else:
-            conn.commit()
-            cur.close()
-            conn.close()
-    except psycopg2.Error as e:
-        QMessageBox.critical(None, "Query Execution Error", f"Error executing query: {e}")
-        return -1
+from functionImplemenation import functions
+import memberId
 
 def show_main_window(user_type, first_name, last_name):
     window = QWidget()
@@ -190,6 +155,17 @@ def billing_and_payment_processing():
     dialog = manageBilingPopup()
     dialog.exec_()
 
+def get_member_id(first_name, last_name, email):
+    func = functions()
+    query = "SELECT member_id FROM Members WHERE first_name = %s AND last_name = %s AND email = %s;"
+    params = (first_name, last_name, email)
+    result = func.execute_query(query, params)
+    if result != -1 and result:
+        print("current member id" + str(result[0][0]))
+        return result[0][0] 
+    else:
+        return None
+
 app = QApplication(sys.argv)
 
 # get user type from the first popup dialog
@@ -208,5 +184,8 @@ if user_type_dialog.exec_() == QDialog.Accepted:
     if login_register_dialog.exec_() == QDialog.Accepted:
         first_name = login_register_dialog.first_name.text()
         last_name = login_register_dialog.last_name.text()
+        email = login_register_dialog.email.text()
+
+        memberId.memberId = get_member_id(first_name, last_name, email)
 
         show_main_window(user_type, first_name, last_name)
