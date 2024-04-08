@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QRadioButton, QMessageBox
 import psycopg2
 from functionImplemenation import functions
+import memberId
 
 #login or register as member/admin/trainer
 class LoginRegisterPopup(QDialog):
@@ -25,7 +26,7 @@ class LoginRegisterPopup(QDialog):
             login_button = QPushButton("Login")
             register_button = QPushButton("Register")
 
-            login_button.clicked.connect(lambda: self.addOrLoginMember(None, self, True))
+            login_button.clicked.connect(lambda: self.addOrLoginMember(registration_dialog= None, login_dialog =self,login= True))
             layout.addWidget(login_button)
 
             register_button.clicked.connect(self.register)
@@ -51,9 +52,9 @@ class LoginRegisterPopup(QDialog):
         self.tallness = QLineEdit()
         self.weight = QLineEdit()
 
-        layout.addWidget(QLabel("Height:"))
+        layout.addWidget(QLabel("Height(cm):"))
         layout.addWidget(self.tallness)
-        layout.addWidget(QLabel("Weight:"))
+        layout.addWidget(QLabel("Weight(kg):"))
         layout.addWidget(self.weight)
 
         register_button = QPushButton("Register Now!")
@@ -79,7 +80,13 @@ class LoginRegisterPopup(QDialog):
             login_dialog.accept()
         elif retur == -1:
             QMessageBox.information(self, "", "Bad Input or db connection!.")
+        elif retur == -2:
+            QMessageBox.information(self, "Please Register", "No account with us yet, please click Register.")
+        
         else:
-            QMessageBox.information(self, "New Register", "Successly added!.")
-            registration_dialog.accept()
+            if login == False:
+                QMessageBox.information(self, "New Register", "Successly added!.")
+                registration_dialog.accept()
+            memberId.memberId = retur
+            print(memberId)
             login_dialog.accept()
