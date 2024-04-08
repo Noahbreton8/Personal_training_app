@@ -31,39 +31,20 @@ VALUES
 
 INSERT INTO Training_Session (status, session_time, trainer_id, member_id)
 VALUES
-('Finished', '2024-04-03', (SELECT trainer_id from Trainers WHERE last_name='Kylian'), (SELECT member_id from Members WHERE last_name='Johnson'));
+('Finished', '2024-04-03', 1, 1),
+('Finished', '2024-04-03', 2, 2);
 
 INSERT INTO Exercise (name, reps, sets, member_id)
 VALUES
-('Bench', 8, 3, (SELECT member_id from Members WHERE last_name='Johnson')),
-('Incline Dumbbell Press', 9, 2, (SELECT member_id from Members WHERE last_name='Johnson'));
+('Bench', 8, 3, 1),
+('Incline Dumbbell Press', 9, 2, 1);
 
 INSERT INTO Fitness_Goal (member_id, fitness_goal)
 VALUES
-((SELECT member_id from Members WHERE last_name='Johnson'), 'lose weight and hit 225 on bench'),
-((SELECT member_id from Members WHERE last_name='Williams'), 'gain weight and hit 5 plates on squat');
+(1, 'lose weight and hit 225 on bench'),
+(2, 'gain weight and hit 5 plates on squat');
 
 INSERT INTO Oversees (admin_id, member_id)
 VALUES
-((SELECT admin_id from Admins WHERE last_name='Lakeman'), (SELECT member_id from Members WHERE last_name='Johnson')),
-((SELECT admin_id from Admins WHERE last_name='Oceanman'), (SELECT member_id from Members WHERE last_name='Williams'));
-
-INSERT INTO Monitor (admin_id, equipment_id)
-VALUES
-((SELECT admin_id from Admins WHERE last_name='Lakeman'), (SELECT equipment_id from Equipment WHERE equipment_name='Bench Press'));
-
-INSERT INTO Updates (admin_id, schedule_id)
-VALUES
-((SELECT admin_id from Admins WHERE last_name='Lakeman'), (SELECT schedule_id from Class_Schedule WHERE room_number=106));
-
-INSERT INTO Classes (class_time, class_name, schedule_id)
-VALUES
-('2024-06-23', 'Bench Press 101', (SELECT schedule_id from Class_Schedule WHERE room_number=106));
-
-INSERT INTO Achievement (member_id, achievement)
-VALUES
-((SELECT member_id from Members WHERE last_name='Johnson'), 'hit 135 lbs on bench');
-
-INSERT INTO Organize (trainer_id, class_id)
-VALUES
-((SELECT trainer_id from Trainers WHERE last_name='Kylian'), (SELECT class_id from Classes WHERE class_name='Bench Press 101'));
+(1, 1),
+(2, 2);
