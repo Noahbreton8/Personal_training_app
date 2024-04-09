@@ -15,6 +15,8 @@ def show_main_window(user_type, first_name, last_name):
     window.setWindowTitle("Gym DB GUI")
     window.setFixedWidth(600)
 
+    func = functions()
+
     gui_layout = QVBoxLayout()
     welcome_label = QLabel(f"Hello {user_type}, {first_name} {last_name}.")
     gui_layout.addWidget(welcome_label)
@@ -26,12 +28,20 @@ def show_main_window(user_type, first_name, last_name):
 
         #add a Qlabel for every exercise
         dashboard_layout = QVBoxLayout()
-        dashboard_layout.addWidget(QLabel("Exercise1:"))
-        dashboard_layout.addWidget(QLabel("Exercise2:"))
-        dashboard_layout.addWidget(QLabel("Exercise3:"))
+        exercise_result = func.getExerciseRoutines(memberId=memberId.memberId)
+        
+        dashboard_layout.addWidget(QLabel("Exercises:"))
+        if exercise_result:
+            for exercise in exercise_result:
+                formatted_exercise = exercise[0] + ": " + str(exercise[1]) + " reps, " + str(exercise[2]) + " sets"
+                dashboard_layout.addWidget(QLabel(formatted_exercise))
 
-        dashboard_layout.addWidget(QLabel("Recent Achievment: Nothing"))
-        dashboard_layout.addWidget(QLabel("Current Weight: 500lbs"))
+        achiev_result = func.getAllAchievements(memberId=memberId.memberId)
+        dashboard_layout.addWidget(QLabel("Recent Achievment:"+str(achiev_result)) )
+
+        weight_result = func.getWeight(memberId=memberId.memberId)
+        if weight_result:
+            dashboard_layout.addWidget(QLabel("Current Weight: " + str(weight_result[0][0]) + " KG"))
 
         #add layout to dashboard
         dashboard.setLayout(dashboard_layout)

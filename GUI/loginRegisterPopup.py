@@ -33,7 +33,7 @@ class LoginRegisterPopup(QDialog):
             layout.addWidget(register_button)
         else:
             login_button = QPushButton("Login")
-            login_button.clicked.connect()  # Pass registration_dialog instance)
+            login_button.clicked.connect(lambda: self.addOrLoginMember(registration_dialog= None, login_dialog =self,login= True))  # Pass registration_dialog instance)
             layout.addWidget(login_button)
 
         self.setLayout(layout)
@@ -70,7 +70,12 @@ class LoginRegisterPopup(QDialog):
     def addOrLoginMember(self, registration_dialog, login_dialog, login):
         # Add a user to the table
         func = functions()
-        retur = func.memberRegistration(firstName=self.first_name.text(), lastName= self.last_name.text(), email=self.email.text(), height=getattr(self, 'tallness', '0'), weight=getattr(self, 'weight', '0'), phoneNumber="123")
+        if self.user_type == 'member':
+            retur = func.memberRegistration(firstName=self.first_name.text(), lastName= self.last_name.text(), email=self.email.text(), height=getattr(self, 'tallness', '0'), weight=getattr(self, 'weight', '0'), phoneNumber="123")
+        if self.user_type == 'trainer':
+            retur = func.trainerLogin(firstName=self.first_name.text(), lastName= self.last_name.text(), email=self.email.text(), phoneNumber="123")
+        if self.user_type == 'admin':
+             retur = func.adminLogin(firstName=self.first_name.text(), lastName= self.last_name.text())
 
         if retur == 0: #try to register but already exist
             if login:

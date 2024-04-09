@@ -1,5 +1,5 @@
 #should have viewing/managing (for trainers)
-from PyQt5.QtWidgets import QMessageBox, QDialog, QVBoxLayout, QLabel,QLineEdit, QHBoxLayout, QPushButton, QFormLayout
+from PyQt5.QtWidgets import QTextEdit, QMessageBox, QDialog, QVBoxLayout, QLabel,QLineEdit, QHBoxLayout, QPushButton, QFormLayout
 from functionImplemenation import functions
 import memberId
 
@@ -7,9 +7,60 @@ class viewMembersPopup(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("View Members (trainers)")
+
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("View Members"))
+        layout.addWidget(QLabel("View Member:"))
+
+        self.first_name_input = QLineEdit()
+        layout.addWidget(QLabel("First Name:"))
+        layout.addWidget(self.first_name_input)
+
+        self.last_name_input = QLineEdit()
+        layout.addWidget(QLabel("Last Name:"))
+        layout.addWidget(self.last_name_input)
+
+        self.search_button = QPushButton("Search")
+        self.search_button.clicked.connect(self.search)
+        layout.addWidget(self.search_button)
+
+        self.achievement_button = QPushButton("Give Achievement:")
+        self.achievement = QLineEdit()
+        self.achievement_button.setDisabled(True)
+        self.achievement_button.clicked.connect(self.giveAchievement)
+        layout.addWidget(self.achievement_button)
+        layout.addWidget(self.achievement)
+
+        self.result_text_edit = QTextEdit()
+        layout.addWidget(self.result_text_edit)
+
         self.setLayout(layout)
+
+    def search(self):
+        func = functions()
+        result = func.getMember(self.first_name_input.text(), self.last_name_input.text())
+
+        if result:
+            formatted_result = ""
+            descriptors = ["First Name", "Last Name", "Phone Number", "Email", "Weight", "Height", "Goal"]
+            for i, item in enumerate(result[0]):
+                formatted_result += descriptors[i] + ": " + str(item) + "\n"
+                if descriptors[i] == "Email":
+                    self.email = item
+            self.result_text_edit.setPlainText(formatted_result)
+            self.achievement_button.setEnabled(True)
+        else:
+            self.result_text_edit.setPlainText("Member not found.")
+            self.achievement_button.setDisabled(True)
+        #display this
+
+    def giveAchievement(self):
+        func = functions()
+        result = func.addToAchievements(memberId.memberId, self.achievement.text())
+        if result != -1:
+            QMessageBox.information(self, "Achievement", "Added Achievement!")     
+        #display this
+            
+
 
 class manageProfilePopup(QDialog):
     def __init__(self):

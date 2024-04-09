@@ -42,13 +42,24 @@ class functions:
             print("Query Execution Error", f"Error executing query: {e}")
             return -1
         
+
+    def get_member_id(self, first_name, last_name, email):
+        query = "SELECT member_id FROM Members WHERE first_name = %s AND last_name = %s AND email = %s;"
+        params = (first_name, last_name, email)
+        result = self.execute_query(query, params)
+        if result != -1 and result:
+            print("current member id" + str(result[0][0]))
+            return result[0][0] 
+        else:
+            return None
+        
     ####
     #### MEMBER FUNCTIONS
     ####
 
     ### 1
     def memberRegistration(self, firstName, lastName, phoneNumber, email, height=None, weight=None):
-        query = "SELECT member_id, first_Name, last_Name, phone_number, email FROM members"
+        query = "SELECT member_id, first_Name, last_Name, email FROM members"
         rows = self.execute_query(query)
 
         if rows == -1:
@@ -56,7 +67,7 @@ class functions:
             return -1
 
         for row in rows:
-            if (row[1], row[2], str(row[3]), row[4]) == (firstName, lastName, str(phoneNumber), email):
+            if (row[1], row[2], row[3]) == (firstName, lastName, email):
                 print("Member already exists or logging in")
                 return row[0]
         
@@ -164,17 +175,6 @@ class functions:
             print("fitness goal added")
 
     #3
-    def addToAchievements(self, memberId, achievement):
-        query = "INSERT INTO Achievement (member_id, achievement) VALUES (%s, %s)"
-        parameters = (memberId, achievement)
-
-        result = self.execute_query(query, parameters)
-        if result == -1:
-            print("member does not exist")
-        else:
-            print("achievement added")
-
-    #3
     def getAllAchievements(self, memberId):
         query = "SELECT achievement FROM Achievement WHERE member_id = '%s'"
         parameters = (memberId,)
@@ -182,21 +182,24 @@ class functions:
         result = self.execute_query(query, parameters)
         if result == []:
             print("no achievements")
+            return "No achievements"
         else:
             print("achievements collected")
             print(result)
+            return result[0][0]
     
     #3
-    def getHealthStats(self, memberId):
-        query = "SELECT height, current_weight FROM members WHERE member_id = '%s'"
+    def getWeight(self, memberId):
+        query = "SELECT current_weight FROM members WHERE member_id = '%s'"
         parameters = (memberId,)
 
         result = self.execute_query(query, parameters)
         if result == []:
-            print("no member")
+            print("no weight")
         else:
-            print("stats collected")
+            print("got weight")
             print(result)
+            return result
 
     #3
     def getExerciseRoutines(self, memberId):
@@ -209,38 +212,32 @@ class functions:
         else:
             print("exercises collected")
             print(result)
-
+            return result
 
 
     ###
     ### TRAINER FUNCTIONS
     ###
-    def trainerRegistration(self, firstName, lastName, phoneNumber, email):
-        query = "SELECT firstName, lastName, phone_number, email FROM trainers"
+    def trainerLogin(self, firstName, lastName, phoneNumber, email):
+        query = "SELECT first_name, last_name, phone_number, email FROM trainers"
         rows = self.execute_query(query)
+
+        if rows == -1:
+            print("Failed to execute query")
+            return -1
+
         for i in range(len(rows)):
-            if rows[i][0] == firstName and rows[i][1] == lastName and rows[i][2] == str(phoneNumber) and rows[i][3] == email:
+            if rows[i][0] == firstName and rows[i][1] == lastName:
                 #maybe turn into pop up?
                 print("successful login")
                 return 0
-        
-        addTrainer = "INSERT INTO trainers (firstName, lastName, phone_number, email, status) VALUES (%s, %s, %s, %s, %s)"
-
-        # available is the status of a new trainer
-        parameters = (firstName, lastName, phoneNumber, email, "available")
-        result = self.execute_query(addTrainer, parameters)
-        if result == -1:
-            print("could not insert")
-        else:
-            print("successfully added new trainer")
-        
-        return result
+        return -1
     
     #1
 
     #2
     def getMember(self, firstName, lastName):
-        query = "SELECT firstName, lastName, phone_number, email FROM Members WHERE firstName = %s AND lastName = %s"
+        query = "SELECT first_name, last_name, phone_number, email, current_weight, height, description FROM Members WHERE first_name = %s AND last_name = %s"
         parameters = (firstName, lastName)
         result = self.execute_query(query, parameters)
         if result == []:
@@ -248,30 +245,37 @@ class functions:
         else:
             print(result)
             print("member(s) found")
+        return result
+    
+    
+    #2
+    def addToAchievements(self, memberId, achievement):
+        query = "INSERT INTO Achievement (member_id, achievement) VALUES (%s, %s)"
+        parameters = (memberId, achievement)
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("member does not exist")
+        else:
+            print("achievement added")
     
     ###
     ### ADMIN FUNCTIONS
     ###
-    def adminRegistration(self, firstName, lastName, phoneNumber, email):
-        query = "SELECT firstName, lastName, phonenumber, email FROM admins"
+    def adminLogin(self, firstName, lastName):
+        query = "SELECT first_name, last_name, phone_number, email FROM admins"
         rows = self.execute_query(query)
-        for i in range(len(rows)):
-            if rows[i][0] == firstName and rows[i][1] == lastName and rows[i][2] == str(phoneNumber) and rows[i][3] == email:
-                #maybe turn into pop up?
-                print("admin already exists")
-                return -1
-        
-        addTrainer = "INSERT INTO admins (firstName, lastName, phonenumber, email) VALUES (%s, %s, %s, %s)"
 
-        # available is the status of a new trainer
-        parameters = (firstName, lastName, phoneNumber, email)
-        result = self.execute_query(addTrainer, parameters)
-        if result == -1:
-            print("could not insert")
-        else:
-            print("successfully added new admin")
-        
-        return result
+        if rows == -1:
+            print("Failed to execute query")
+            return -1
+
+        for i in range(len(rows)):
+            if rows[i][0] == firstName and rows[i][1] == lastName:
+                #maybe turn into pop up?
+                print("successful login")
+                return 0
+        return -1
     
     #2
     def getEquipment(self, adminId):
@@ -288,13 +292,14 @@ class functions:
         finalResults = []
         for i in range(len(result)):
             query = "SELECT equipment_name, maintenance_status FROM Equipment WHERE equipment_id = '%s'"
-            parameters = (result[i], )
+            parameters = (result[i][0], )
 
             result2 = self.execute_query(query, parameters)
             if result2 != -1:
                 finalResults.append(result2)
         
         print(finalResults)
+        return finalResults
 
 
 functions_instance = functions()

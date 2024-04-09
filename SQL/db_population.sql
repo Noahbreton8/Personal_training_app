@@ -1,7 +1,6 @@
 INSERT INTO Admins (first_name, last_name, email, phone_number)
 VALUES
 ('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230'),
-('Erica', 'Oceanman', 'ericaoceanman@yahoo.ca', '6478527418');
 
 INSERT INTO Members (first_name, last_name, phone_number, email, height, current_weight, amount, description, payment_status)
 VALUES
@@ -48,3 +47,11 @@ INSERT INTO Oversees (admin_id, member_id)
 VALUES
 (1, 1),
 (2, 2);
+
+INSERT INTO Monitor (admin_id, equipment_id)
+VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5);
