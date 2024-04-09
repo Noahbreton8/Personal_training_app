@@ -30,8 +30,7 @@ CREATE TABLE Trainers (
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     phone_number VARCHAR(255),
-    email VARCHAR(255) NOT NULL,
-    status VARCHAR(255)
+    email VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Room_Bookings (
@@ -128,4 +127,13 @@ CREATE TABLE Organize (
     class_id INT,
     FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id),
     FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+);
+
+CREATE TABLE Availability (
+    avail_id SERIAL PRIMARY KEY,
+    trainer_id INT,
+    day_of_week VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id)
 );

@@ -4,7 +4,7 @@
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
 
-class scheduleClassesPopup(QDialog):
+class scheduleGroupClassesPopup(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Schedule Classes(for trainers)")
@@ -12,7 +12,7 @@ class scheduleClassesPopup(QDialog):
         layout.addWidget(QLabel("Schedule Classes"))
         self.setLayout(layout)
 
-class registerClassesPopup(QDialog):
+class registerGroupClassesPopup(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Register for Classes(for users)")
@@ -20,7 +20,7 @@ class registerClassesPopup(QDialog):
         layout.addWidget(QLabel("Register for Classes"))
         self.setLayout(layout)
 
-class updateClassesPopup(QDialog):
+class updateGroupClassesPopup(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Update for Classes(for admin)")

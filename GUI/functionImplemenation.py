@@ -53,6 +53,16 @@ class functions:
         else:
             return None
         
+    def get_trainer_id(self, first_name, last_name):
+        query = "SELECT trainer_id FROM Trainers WHERE first_name = %s AND last_name = %s;"
+        params = (first_name, last_name)
+        result = self.execute_query(query, params)
+        if result != -1 and result:
+            print("current trainer id" + str(result[0][0]))
+            return result[0][0] 
+        else:
+            return None
+        
     ####
     #### MEMBER FUNCTIONS
     ####
@@ -232,8 +242,6 @@ class functions:
                 print("successful login")
                 return 0
         return -1
-    
-    #1
 
     #2
     def getMember(self, firstName, lastName):
@@ -258,6 +266,31 @@ class functions:
             print("member does not exist")
         else:
             print("achievement added")
+
+        #1
+    def getAvailability(self, first_name, last_name):
+        trainer_id = self.get_trainer_id(first_name, last_name)
+        query = "SELECT * FROM Availability WHERE trainer_id = %s"
+        parameters = (trainer_id,) 
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("Failed to get availability")
+        else:
+            print(result)
+            return result
+
+    #1
+    def setAvailability(self, column, day, first_name, last_name, start_time, end_time):
+        trainer_id = self.get_trainer_id(first_name, last_name)
+        query = "UPDATE Availability SET %s = %s WHERE trainer_id = %s and day_of_week = %s"
+        parameters = (value, room_number)
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("failed to update room")
+        else:
+            print("updateRoom")
     
     ###
     ### ADMIN FUNCTIONS
@@ -301,6 +334,32 @@ class functions:
         print(finalResults)
         return finalResults
 
+    #3
+    def getRooms(self):
+        query = "SELECT * FROM Room_Bookings"
+        parameters = ()
+        result = self.execute_query(query, parameters)
+        if result == []:
+            print("no room bookings")
+            return -1
+        
+        print(result)
+        print("room bookings")
+
+        return result
+    
+    #3
+    def updateRoomValue(self, room_number, column_name, value):
+        query = f"UPDATE Room_Bookings SET {column_name} = %s WHERE room_number = %s"
+        parameters = (value, room_number)
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("failed to update room")
+        else:
+            print("updateRoom")
+
+    
 
 functions_instance = functions()
 #functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")

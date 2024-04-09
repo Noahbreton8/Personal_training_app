@@ -1,10 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QRadioButton, QMessageBox
 import psycopg2
-import userSelectionPopup , loginRegisterPopup, scheduleClassesPopup, viewMembersPopup
+from userSelectionPopup import UserTypeSelectionPopup
+from loginRegisterPopup import LoginRegisterPopup
+from scheduleGroupClassesPopup import scheduleGroupClassesPopup
 from monitorEquipmentPopup import monitorEquipmentPopup, manageRoomsPopup
-from scheduleClassesPopup import scheduleClassesPopup, registerClassesPopup , updateClassesPopup
-from trainingSessionsPopup import bookTrainingPopup, setAvail
+from scheduleGroupClassesPopup import scheduleGroupClassesPopup, registerGroupClassesPopup , updateGroupClassesPopup
+from trainingSessionsPopup import setAvail, bookTrainingPopup
 from viewMembersPopup import viewMembersPopup, manageProfilePopup
 from billingAndPaymentPopup import manageBilingPopup
 from functionImplemenation import functions
@@ -19,6 +21,7 @@ def show_main_window(user_type, first_name, last_name):
 
     gui_layout = QVBoxLayout()
     welcome_label = QLabel(f"Hello {user_type}, {first_name} {last_name}.")
+
     gui_layout.addWidget(welcome_label)
 
     if user_type == "member":
@@ -50,7 +53,7 @@ def show_main_window(user_type, first_name, last_name):
 
         member_group = QGroupBox("Features")
         profile_management_button = QPushButton("Profile Management")
-        class_schedule_button = QPushButton("Register for Classes")
+        manage_schedule_button = QPushButton("Register for Classes")
         book_training_button = QPushButton("Book Training")
 
         member_functions_layout = QVBoxLayout()
@@ -61,8 +64,8 @@ def show_main_window(user_type, first_name, last_name):
         book_training_button.clicked.connect(book_training)
         member_functions_layout.addWidget(book_training_button)
 
-        class_schedule_button.clicked.connect(book_classes)
-        member_functions_layout.addWidget(class_schedule_button)
+        manage_schedule_button.clicked.connect(book_classes)
+        member_functions_layout.addWidget(manage_schedule_button)
 
         member_group.setLayout(member_functions_layout)
         gui_layout.addWidget(member_group)
@@ -70,13 +73,16 @@ def show_main_window(user_type, first_name, last_name):
         #trainer buttons
     elif user_type == "trainer":
         trainer_group = QGroupBox("Features")
-        class_schedule_button = QPushButton("Schedule Management")
+        manage_schedule_button = QPushButton("Schedule Management")
         view_profiles_button = QPushButton("Member Profile Viewing")
 
         trainer_layout = QVBoxLayout()
+        def show_set_avail_dialog():
+            dialog = setAvail(first_name=first_name, last_name=last_name)
+            dialog.exec_()
 
-        class_schedule_button.clicked.connect(set_avail)
-        trainer_layout.addWidget(class_schedule_button)
+        manage_schedule_button.clicked.connect(show_set_avail_dialog)
+        trainer_layout.addWidget(manage_schedule_button)
 
         view_profiles_button.clicked.connect(member_profile_viewing)
         trainer_layout.addWidget(view_profiles_button)
@@ -122,7 +128,7 @@ def profile_management():
 
 def book_classes():
     print("Register for Classes")
-    dialog = registerClassesPopup()
+    dialog = registerGroupClassesPopup()
     dialog.exec_()
 
 def book_training():
@@ -141,7 +147,7 @@ def set_avail():
 
 def schedule_classes():
     print("Schedule Classes")
-    dialog = scheduleClassesPopup()
+    dialog = scheduleGroupClassesPopup()
     dialog.exec_()
 
 # admin functions
@@ -157,7 +163,7 @@ def equipment_maintenance_monitoring():
 
 def class_schedule_updating():
     print("Class Schedule Updating")
-    dialog = updateClassesPopup()
+    dialog = updateGroupClassesPopup()
     dialog.exec_()
 
 def billing_and_payment_processing():
@@ -179,12 +185,12 @@ def get_member_id(first_name, last_name, email):
 app = QApplication(sys.argv)
 
 # get user type from the first popup dialog
-user_type_dialog = userSelectionPopup.UserTypeSelectionPopup()
+user_type_dialog = UserTypeSelectionPopup()
 if user_type_dialog.exec_() == QDialog.Accepted:
     user_type = user_type_dialog.user_type
 
     # set names from the dialog and pass it to main window
-    login_register_dialog = loginRegisterPopup.LoginRegisterPopup(user_type)
+    login_register_dialog = LoginRegisterPopup(user_type)
 
     # Connect the register_button to the register method of login_register_dialog
     register_button = login_register_dialog.findChild(QPushButton, "Register")

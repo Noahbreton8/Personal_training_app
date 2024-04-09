@@ -1,6 +1,6 @@
 INSERT INTO Admins (first_name, last_name, email, phone_number)
 VALUES
-('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230'),
+('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230');
 
 INSERT INTO Members (first_name, last_name, phone_number, email, height, current_weight, amount, description, payment_status)
 VALUES
@@ -15,13 +15,17 @@ VALUES
 ('Pec Deck', 'Good'),
 ('Treadmill', 'Bad');
 
-INSERT INTO Trainers (first_name, last_name, phone_number, email, status)
+INSERT INTO Trainers (first_name, last_name, phone_number, email)
 VALUES
-('Kylian', 'Mbappe', '123456789', 'mbappe@psg.com', 'Free'),
-('Robert', 'Lewandowski', '123456789', 'balondor2020@gmail.com', 'Busy');
+('Kylian', 'Mbappe', '123456789', 'mbappe@psg.com'),
+('Robert', 'Lewandowski', '123456789', 'balondor2020@gmail.com');
 
 INSERT INTO Room_Bookings (status, purpose, room_number, booking_time)
 VALUES
+('Free', 'Personal Training', 101, '2024-06-22'),
+('Free', 'Personal Training', 102, '2024-06-22'),
+('Free', 'Personal Training', 103, '2024-06-22'),
+('Free', 'Personal Training', 104, '2024-06-22'),
 ('Free', 'Personal Training', 105, '2024-06-22');
 
 INSERT INTO Class_Schedule (room_number, status, class_time)
@@ -46,7 +50,7 @@ VALUES
 INSERT INTO Oversees (admin_id, member_id)
 VALUES
 (1, 1),
-(2, 2);
+(1, 2);
 
 INSERT INTO Monitor (admin_id, equipment_id)
 VALUES
@@ -55,3 +59,25 @@ VALUES
 (1,3),
 (1,4),
 (1,5);
+
+-- trainer 1
+INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
+VALUES 
+    (1, 'Monday', NULL, NULL),
+    (1, 'Tuesday', NULL, NULL),
+    (1, 'Wednesday', NULL, NULL),
+    (1, 'Thursday', NULL, NULL),
+    (1, 'Friday', NULL, NULL),
+    (1, 'Saturday', NULL, NULL),
+    (1, 'Sunday', NULL, NULL);
+
+--trainer 2
+INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
+VALUES 
+    (2, 'Monday', NULL, NULL),
+    (2, 'Tuesday', NULL, NULL),
+    (2, 'Wednesday', NULL, NULL),
+    (2, 'Thursday', NULL, NULL),
+    (2, 'Friday', NULL, NULL),
+    (2, 'Saturday', NULL, NULL),
+    (2, 'Sunday', NULL, NULL);
