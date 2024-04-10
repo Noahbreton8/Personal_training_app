@@ -4,9 +4,9 @@ import psycopg2
 from datetime import datetime
 
 #posgresql credentials
-DATABASE_NAME = "finalProject"
+DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "student"
+DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -59,7 +59,7 @@ class functions:
         params = (first_name, last_name)
         result = self.execute_query(query, params)
         if result != -1 and result:
-            print("current trainer id" + str(result[0][0]))
+            #print("current trainer id" + str(result[0][0]))
             return result[0][0] 
         else:
             return None
@@ -224,6 +224,23 @@ class functions:
             print("exercises collected")
             print(result)
             return result
+        
+    #4
+    def setUpTrainingSession(self, trainerId, dayOfWeek, startTime):
+        #maybe 1 hour long increments?
+        #assumming the dates look like: HH:MM where minutes are always 00
+        query = "SELECT start_time, end_time FROM availability WHERE trainer_id = '%s' AND day_of_week = %s"
+        params = (trainerId, dayOfWeek)
+        returnVal = self.execute_query(query, params)
+        availableStart = returnVal[0]
+        startHour = availableStart[3]
+        availableEnd = returnVal[1]
+        endHour = availableEnd[3]
+
+
+
+        print(returnVal)
+
 
 
     ###
@@ -268,7 +285,7 @@ class functions:
         else:
             print("achievement added")
 
-        #1
+    #1
     def getAvailability(self, first_name, last_name):
         trainer_id = self.get_trainer_id(first_name, last_name)
         query = "SELECT * FROM Availability WHERE trainer_id = %s"
@@ -296,6 +313,42 @@ class functions:
         else:
             print("set avail")
         return result
+    
+    #1
+    def updateTrainerSessions(self, first_name, last_name, day, start_time, end_time):
+        #start_time is an integer representing the hour
+
+        trainer_id = self.get_trainer_id(first_name, last_name)
+
+        query = "SELECT status FROM Training_Session WHERE trainer_id = '%s' AND day_of_week = %s ORDER BY session_time ASC"
+        params = (trainer_id, day)
+
+        trainingTable = self.execute_query(query, params)
+
+        for i in range(9, 17):
+            if (i < start_time and trainingTable[i-9][0] != "NOT AVAILABLE") or (i > end_time and trainingTable != "NOT AVAILABLE"):
+                if i == 9:
+                    session_time = "2024-04-09 0" + str(i) + ":00:00"
+                else:
+                    session_time = "2024-04-09 " + str(i) + ":00:00"
+                query = "UPDATE Training_Session SET status = 'NOT AVAILABLE' WHERE day_of_week = %s and session_time = %s"
+                parameters = (day, session_time)
+                self.execute_query(query, parameters)
+
+            elif i >= start_time and i < end_time and trainingTable[i-9][0] == "NOT AVAILABLE":
+                if i == 9:
+                    session_time = "2024-04-09 0" + str(i) + ":00:00"
+                else:
+                    session_time = "2024-04-09 " + str(i) + ":00:00"
+                query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE day_of_week = %s and session_time = %s"
+                parameters = (day, session_time)
+                self.execute_query(query, parameters)
+
+                
+
+
+
+
     
     ###
     ### ADMIN FUNCTIONS
@@ -382,3 +435,5 @@ functions_instance = functions()
 #functions_instance.getHealthStats(1)
 #functions_instance.getExerciseRoutines(1)
 #functions_instance.getMember("Member", "1")
+#functions_instance.setUpTrainingSession(1, 'Monday', "09:00", "15:00")
+#functions_instance.updateTrainerSessions("Kylian", "Mbappe", "Monday", 11, 13)

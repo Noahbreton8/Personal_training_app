@@ -10,14 +10,14 @@ class setAvail(QDialog):
         self.first_name = first_name
         self.last_name = last_name
         
-        self.setWindowTitle("Training Sessions (Trainers)")
+        self.setWindowTitle('Training Sessions (Trainers)')
         
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("Set Availability for Training Sessions"))
+        layout.addWidget(QLabel('Set Availability for Training Sessions'))
         
         self.table = QTableWidget()
         self.table.setColumnCount(3) 
-        self.table.setHorizontalHeaderLabels(["Day", "Start", "End"])
+        self.table.setHorizontalHeaderLabels(['Day', 'Start', 'End'])
         
         func = functions()
         results = func.getAvailability(self.first_name, self.last_name)
@@ -28,9 +28,9 @@ class setAvail(QDialog):
             for column, item in enumerate(data[2:]): 
                 if column == 1 or column == 2: 
                     time_edit = QTimeEdit()
-                    time_edit.setDisplayFormat("HH:mm")  
+                    time_edit.setDisplayFormat('HH:mm')  
                     if item: 
-                        time = QtCore.QTime.fromString(item.strftime("%H:%M"), "HH:mm")
+                        time = QtCore.QTime.fromString(item.strftime('%H:%M'), 'HH:mm')
                         time_edit.setTime(time)
                     self.table.setCellWidget(row, column, time_edit)
                 else:
@@ -45,7 +45,7 @@ class setAvail(QDialog):
         self.table.setMinimumSize(QSize(600, 270))    
         layout.addWidget(self.table)
 
-        update_button = QPushButton("Update!")
+        update_button = QPushButton('Update!')
         layout.addWidget(update_button)
         update_button.clicked.connect(self.updateAvail)
         self.setLayout(layout)
@@ -55,31 +55,36 @@ class setAvail(QDialog):
     def updateAvail(self):
         success = True
         
+        func = functions()
         for row in range(self.table.rowCount()):  
             day = self.table.item(row, 0).text()  
             start_time_item = self.table.cellWidget(row, 1) 
             end_time_item = self.table.cellWidget(row, 2)  
-            start_time = start_time_item.time().toString("HH:mm")  
-            end_time = end_time_item.time().toString("HH:mm")
+            start_time = start_time_item.time().toString('HH:mm')  
+            end_time = end_time_item.time().toString('HH:mm')
 
-            func = functions()
-            start_result = func.setAvailability("start_time", day, self.first_name, self.last_name, start_time)
-            end_result = func.setAvailability("end_time", day, self.first_name, self.last_name, end_time)
+            startHour = int(start_time.split(':')[0]) #gets the hour of start_time as an integer
+            endHour = int(end_time.split(':')[0])
+            
+            func.updateTrainerSessions(self.first_name, self.last_name, day, startHour, endHour)
+
+            start_result = func.setAvailability('start_time', day, self.first_name, self.last_name, start_time)
+            end_result = func.setAvailability('end_time', day, self.first_name, self.last_name, end_time)
             
             if start_result == -1 or end_result == -1:
                 success = False 
 
         if success:
-            QMessageBox.information(self, "Availability", "Availability updated!")  
+            QMessageBox.information(self, 'Availability', 'Availability updated!')  
         else: 
-            QMessageBox.warning(self, "Error", "Failed to change availability:(")
+            QMessageBox.warning(self, 'Error', 'Failed to change availability:(')
 
 
 #member #1
 class bookTrainingPopup(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Training Sessions (trainers)")
+        self.setWindowTitle('Training Sessions (trainers)')
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("set avaalbity for Training Sessions"))
+        layout.addWidget(QLabel('set avaalbity for Training Sessions'))
         self.setLayout(layout)

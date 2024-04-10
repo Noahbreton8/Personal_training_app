@@ -104,8 +104,9 @@ CREATE TABLE Fitness_Goal (
 
 CREATE TABLE Training_Session (
     session_id SERIAL PRIMARY KEY,
-    status VARCHAR(255),
+    day_of_week VARCHAR(255) NOT NULL,
     session_time TIMESTAMP,
+    status VARCHAR(255),
     trainer_id INT,
     member_id INT,
     FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id),
