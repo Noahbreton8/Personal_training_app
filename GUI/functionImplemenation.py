@@ -4,9 +4,9 @@ import psycopg2
 from datetime import datetime
 
 #posgresql credentials
-DATABASE_NAME = "final"
+DATABASE_NAME = "finalProject"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+DATABASE_PASSWORD = "student"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -225,21 +225,21 @@ class functions:
             print(result)
             return result
         
-    #4
-    def setUpTrainingSession(self, trainerId, dayOfWeek, startTime):
-        #maybe 1 hour long increments?
-        #assumming the dates look like: HH:MM where minutes are always 00
-        query = "SELECT start_time, end_time FROM availability WHERE trainer_id = '%s' AND day_of_week = %s"
-        params = (trainerId, dayOfWeek)
-        returnVal = self.execute_query(query, params)
-        availableStart = returnVal[0]
-        startHour = availableStart[3]
-        availableEnd = returnVal[1]
-        endHour = availableEnd[3]
+    # #4
+    # def setUpTrainingSession(self, trainerId, dayOfWeek, startTime):
+    #     #maybe 1 hour long increments?
+    #     #assumming the dates look like: HH:MM where minutes are always 00
+    #     query = "SELECT start_time, end_time FROM availability WHERE trainer_id = '%s' AND day_of_week = %s"
+    #     params = (trainerId, dayOfWeek)
+    #     returnVal = self.execute_query(query, params)
+    #     availableStart = returnVal[0]
+    #     startHour = availableStart[3]
+    #     availableEnd = returnVal[1]
+    #     endHour = availableEnd[3]
 
 
 
-        print(returnVal)
+    #     print(returnVal)
 
 
     #4
@@ -254,8 +254,18 @@ class functions:
             print(result)
             return result
         
-    def getTrainerSessions(self):
-        #todo
+    def getTrainerSessions(self, trainer_id):
+        query = "SELECT day_of_week, session_time, status FROM Training_Session WHERE trainer_id = '%s'"
+        params = (trainer_id,)
+
+        result = self.execute_query(query, params)
+        if result == []:
+            print("no training sessions")
+        else:
+            print("training sessions found")
+            print(result)
+            return result
+
         return
 
     ###

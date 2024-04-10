@@ -126,10 +126,24 @@ class bookTrainingPopup(QDialog):
             self.trainer = 2
         self.select_button.setDisabled(True)
 
-        #result = self.func.get_trainer_sessions(self.trainer)
-        result = 1
+        result = self.func.getTrainerSessions(self.trainer)
+
+        arrayOfTrainerSessions = [[0 for col in range(7)] for row in range (8)]
+
+        innerIndex = 0
+        OuterIndex = 0
 
         if result is not None:
+
+            for row in result:
+
+                if innerIndex % 7 == 0 and innerIndex != 0:
+                    OuterIndex +=1
+                    innerIndex = 0
+
+                arrayOfTrainerSessions[OuterIndex][innerIndex] = row[2]
+                innerIndex += 1
+
             self.training_table = QTableWidget()
             self.training_table.setMinimumSize(QSize(950, 305))
             self.training_table.setColumnCount(8)
@@ -140,13 +154,20 @@ class bookTrainingPopup(QDialog):
             for row, time_slot in enumerate(time_slots):
                 self.training_table.setItem(row, 0, QTableWidgetItem(time_slot))
                 
-            
+            print(self.training_table.rowCount())
+            print(self.training_table.columnCount())
+
             #fill out the busy and unavailable time slots
             for row in range(0, self.training_table.rowCount()):
-                for column in range(1, self.training_table.columnCount()):
-                    index11 = QRadioButton("Book")
-                    #self.training_table.setItem(row, column, QTableWidgetItem(selecte))
-                    self.training_table.setIndexWidget(self.training_table.model().index(row, column), index11)
+                for column in range(0, self.training_table.columnCount()-1):
+
+                    if(arrayOfTrainerSessions[row][column] != "BOOKED" and arrayOfTrainerSessions[row][column] != 'NOT AVAILABLE'):
+                        index = QRadioButton("Book")
+                        #self.training_table.setItem(row, column, QTableWidgetItem(selecte))
+                        self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), index)
+                    else:
+                        self.training_table.setItem(row, column+1, QTableWidgetItem(arrayOfTrainerSessions[row][column]))
+                       # self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), )
 
         self.layout.addWidget(self.training_table)
         self.layout.addWidget(self.update_button)
