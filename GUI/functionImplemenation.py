@@ -346,8 +346,8 @@ class functions:
                     session_time = "2024-04-09 0" + str(i) + ":00:00"
                 else:
                     session_time = "2024-04-09 " + str(i) + ":00:00"
-                query = "UPDATE Training_Session SET status = 'NOT AVAILABLE' WHERE day_of_week = %s and session_time = %s"
-                parameters = (day, session_time)
+                query = "UPDATE Training_Session SET status = 'NOT AVAILABLE' WHERE trainer_id = '%s' day_of_week = %s and session_time = %s"
+                parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
             elif i >= start_time and i < end_time and trainingTable[i-9][0] == "NOT AVAILABLE":
@@ -355,8 +355,8 @@ class functions:
                     session_time = "2024-04-09 0" + str(i) + ":00:00"
                 else:
                     session_time = "2024-04-09 " + str(i) + ":00:00"
-                query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE day_of_week = %s and session_time = %s"
-                parameters = (day, session_time)
+                query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE trainer_id = '%s' day_of_week = %s and session_time = %s"
+                parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
                 
