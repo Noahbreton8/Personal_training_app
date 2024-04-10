@@ -128,7 +128,7 @@ class bookTrainingPopup(QDialog):
 
         result = self.func.getTrainerSessions(self.trainer)
 
-        arrayOfTrainerSessions = [[0 for col in range(7)] for row in range (8)]
+        arrayOfTrainerSessions = [[0 for col in range(8)] for row in range (7)]
 
         innerIndex = 0
         OuterIndex = 0
@@ -137,7 +137,7 @@ class bookTrainingPopup(QDialog):
 
             for row in result:
 
-                if innerIndex % 7 == 0 and innerIndex != 0:
+                if innerIndex % 8 == 0 and innerIndex != 0:
                     OuterIndex +=1
                     innerIndex = 0
 
@@ -161,12 +161,12 @@ class bookTrainingPopup(QDialog):
             for row in range(0, self.training_table.rowCount()):
                 for column in range(0, self.training_table.columnCount()-1):
 
-                    if(arrayOfTrainerSessions[row][column] != "BOOKED" and arrayOfTrainerSessions[row][column] != 'NOT AVAILABLE'):
+                    if(arrayOfTrainerSessions[column][row] != "BOOKED" and arrayOfTrainerSessions[column][row] != 'NOT AVAILABLE'):
                         index = QRadioButton("Book")
                         #self.training_table.setItem(row, column, QTableWidgetItem(selecte))
                         self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), index)
                     else:
-                        self.training_table.setItem(row, column+1, QTableWidgetItem(arrayOfTrainerSessions[row][column]))
+                        self.training_table.setItem(row, column+1, QTableWidgetItem(arrayOfTrainerSessions[column][row]))
                        # self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), )
 
         self.layout.addWidget(self.training_table)

@@ -4,9 +4,9 @@ import psycopg2
 from datetime import datetime
 
 #posgresql credentials
-DATABASE_NAME = "finalProject"
+DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "student"
+DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -255,7 +255,7 @@ class functions:
             return result
         
     def getTrainerSessions(self, trainer_id):
-        query = "SELECT day_of_week, session_time, status FROM Training_Session WHERE trainer_id = '%s'"
+        query = "SELECT day_of_week, session_time, status FROM Training_Session WHERE trainer_id = '%s' ORDER BY session_id ASC"
         params = (trainer_id,)
 
         result = self.execute_query(query, params)
@@ -356,7 +356,7 @@ class functions:
                     session_time = "2024-04-09 0" + str(i) + ":00:00"
                 else:
                     session_time = "2024-04-09 " + str(i) + ":00:00"
-                query = "UPDATE Training_Session SET status = 'NOT AVAILABLE' WHERE trainer_id = '%s' day_of_week = %s and session_time = %s"
+                query = "UPDATE Training_Session SET status = 'NOT AVAILABLE' WHERE trainer_id = '%s' AND day_of_week = %s AND session_time = %s"
                 parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
@@ -365,7 +365,7 @@ class functions:
                     session_time = "2024-04-09 0" + str(i) + ":00:00"
                 else:
                     session_time = "2024-04-09 " + str(i) + ":00:00"
-                query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE trainer_id = '%s' day_of_week = %s and session_time = %s"
+                query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE trainer_id = '%s' AND day_of_week = %s AND session_time = %s"
                 parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
