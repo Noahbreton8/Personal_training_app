@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel, QLineEdit, QPushButton, QMessageBox
 import psycopg2
+from datetime import datetime
 
 #posgresql credentials
 DATABASE_NAME = "finalProject"
@@ -281,16 +282,20 @@ class functions:
             return result
 
     #1
-    def setAvailability(self, column, day, first_name, last_name, start_time, end_time):
+    def setAvailability(self, column, day, first_name, last_name, value):
         trainer_id = self.get_trainer_id(first_name, last_name)
-        query = "UPDATE Availability SET %s = %s WHERE trainer_id = %s and day_of_week = %s"
-        parameters = (value, room_number)
+        query = "UPDATE Availability SET {} = %s WHERE trainer_id = %s and day_of_week = %s".format(column)
+        
+        timestamp_value = datetime.strptime(value, "%H:%M").strftime("%Y-%m-%d %H:%M:%S")
+        
+        parameters = (timestamp_value, trainer_id, day)
 
         result = self.execute_query(query, parameters)
         if result == -1:
-            print("failed to update room")
+            print("failed to set avail")
         else:
-            print("updateRoom")
+            print("set avail")
+        return result
     
     ###
     ### ADMIN FUNCTIONS

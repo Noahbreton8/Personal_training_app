@@ -60,24 +60,24 @@ VALUES
 (1,4),
 (1,5);
 
--- trainer 1
+--trainer 1
 INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
 VALUES 
-    (1, 'Monday', NULL, NULL),
-    (1, 'Tuesday', NULL, NULL),
-    (1, 'Wednesday', NULL, NULL),
-    (1, 'Thursday', NULL, NULL),
-    (1, 'Friday', NULL, NULL),
-    (1, 'Saturday', NULL, NULL),
-    (1, 'Sunday', NULL, NULL);
+    (1, 'Monday', '2024-04-09 09:00:00', '2024-04-09 17:00:00'),
+    (1, 'Tuesday', '2024-04-10 09:00:00', '2024-04-10 17:00:00'),
+    (1, 'Wednesday', '2024-04-11 09:00:00', '2024-04-11 17:00:00'),
+    (1, 'Thursday', '2024-04-12 09:00:00', '2024-04-12 17:00:00'),
+    (1, 'Friday', '2024-04-13 09:00:00', '2024-04-13 17:00:00'),
+    (1, 'Saturday', '2024-04-14 09:00:00', '2024-04-14 17:00:00'),
+    (1, 'Sunday', '2024-04-15 09:00:00', '2024-04-15 17:00:00');
 
 --trainer 2
 INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
 VALUES 
-    (2, 'Monday', NULL, NULL),
-    (2, 'Tuesday', NULL, NULL),
-    (2, 'Wednesday', NULL, NULL),
-    (2, 'Thursday', NULL, NULL),
-    (2, 'Friday', NULL, NULL),
-    (2, 'Saturday', NULL, NULL),
-    (2, 'Sunday', NULL, NULL);
+    (2, 'Monday', '2024-04-09 09:00:00', '2024-04-09 17:00:00'),
+    (2, 'Tuesday', '2024-04-10 09:00:00', '2024-04-10 17:00:00'),
+    (2, 'Wednesday', '2024-04-11 09:00:00', '2024-04-11 17:00:00'),
+    (2, 'Thursday', '2024-04-12 09:00:00', '2024-04-12 17:00:00'),
+    (2, 'Friday', '2024-04-13 09:00:00', '2024-04-13 17:00:00'),
+    (2, 'Saturday', '2024-04-14 09:00:00', '2024-04-14 17:00:00'),
+    (2, 'Sunday', '2024-04-15 09:00:00', '2024-04-15 17:00:00');

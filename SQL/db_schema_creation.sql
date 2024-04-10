@@ -133,7 +133,7 @@ CREATE TABLE Availability (
     avail_id SERIAL PRIMARY KEY,
     trainer_id INT,
     day_of_week VARCHAR(255) NOT NULL,
-    start_time TIMESTAMP,
-    end_time TIMESTAMP,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
     FOREIGN KEY (trainer_id) REFERENCES Trainers(trainer_id)
 );
