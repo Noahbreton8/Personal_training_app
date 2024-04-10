@@ -2,11 +2,12 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, QLabel, QLineEdit, QPushButton, QMessageBox
 import psycopg2
 from datetime import datetime
+import memberId
 
 #posgresql credentials
-DATABASE_NAME = "final"
+DATABASE_NAME = "finalProject"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+DATABASE_PASSWORD = "student"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -255,7 +256,7 @@ class functions:
             return result
         
     def getTrainerSessions(self, trainer_id):
-        query = "SELECT day_of_week, session_time, status FROM Training_Session WHERE trainer_id = '%s' ORDER BY session_id ASC"
+        query = "SELECT day_of_week, session_time, status, member_id FROM Training_Session WHERE trainer_id = '%s' ORDER BY session_id ASC"
         params = (trainer_id,)
 
         result = self.execute_query(query, params)
@@ -369,10 +370,29 @@ class functions:
                 parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
-                
 
+    def removeTrainingSession(self, day, date, trainer_id):
+        query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE day_of_week = %s AND status = 'BOOKED' AND session_time = %s AND trainer_id = '%s'"
+        
+        parameters = (day, date, trainer_id,) 
 
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("Failed to remove training session")
+        else:
+            print("successful delete")
+            return result
 
+    def addTrainingSession(self, day, date, trainer_id):
+        query = "UPDATE Training_Session SET status = 'BOOKED', member_id = '%s' WHERE day_of_week = %s AND session_time = %s AND trainer_id = '%s'"
+        parameters = (memberId.memberId, day, date, trainer_id,) 
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("Failed to add training session")
+        else:
+            print("successful add")
+            return result
 
     
     ###

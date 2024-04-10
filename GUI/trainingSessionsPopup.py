@@ -2,6 +2,8 @@ from functionImplemenation import functions
 from PyQt5.QtWidgets import QRadioButton, QMessageBox, QPushButton, QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QTimeEdit
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import QtCore
+from datetime import datetime 
+import memberId
 
 #trainer #1
 class setAvail(QDialog):
@@ -132,6 +134,7 @@ class bookTrainingPopup(QDialog):
 
         innerIndex = 0
         OuterIndex = 0
+        self.prevBook = None
 
         if result is not None:
 
@@ -142,6 +145,8 @@ class bookTrainingPopup(QDialog):
                     innerIndex = 0
 
                 arrayOfTrainerSessions[OuterIndex][innerIndex] = row[2]
+                if arrayOfTrainerSessions[OuterIndex][innerIndex] == 'BOOKED' and row[3]== memberId.memberId:
+                    self.prevBook = row
                 innerIndex += 1
 
             self.training_table = QTableWidget()
@@ -160,14 +165,36 @@ class bookTrainingPopup(QDialog):
             #fill out the busy and unavailable time slots
             for row in range(0, self.training_table.rowCount()):
                 for column in range(0, self.training_table.columnCount()-1):
-
-                    if(arrayOfTrainerSessions[column][row] != "BOOKED" and arrayOfTrainerSessions[column][row] != 'NOT AVAILABLE'):
-                        index = QRadioButton("Book")
-                        #self.training_table.setItem(row, column, QTableWidgetItem(selecte))
-                        self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), index)
-                    else:
+                    if(arrayOfTrainerSessions[column][row] == 'NOT AVAILABLE'):
                         self.training_table.setItem(row, column+1, QTableWidgetItem(arrayOfTrainerSessions[column][row]))
-                       # self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), )
+                    elif (arrayOfTrainerSessions[column][row] == "BOOKED"):
+
+                        time_item = self.training_table.item(row, 0)
+                        if time_item:
+                            start_time_string = time_item.text().split(" - ")[0]
+
+                            current_date = datetime(2024,4,9)
+                            start_time_hour, start_time_minute = map(int, start_time_string.split(":"))
+                            date = datetime(current_date.year, current_date.month, current_date.day, start_time_hour, start_time_minute)
+                        
+                        if self.prevBook != None:
+                            print(self.prevBook[0])
+                            print(self.training_table.horizontalHeaderItem(column+1).text())
+                            print(self.prevBook[1])
+                            print(date)
+
+                        if self.prevBook == None:
+                                self.training_table.setItem(row, column+1, QTableWidgetItem('BOOKED'))
+                        
+                        elif self.prevBook[0] == self.training_table.horizontalHeaderItem(column+1).text() and self.prevBook[1] == date:
+                            index = QRadioButton("Prev Booking")
+                            index.setChecked(True)
+                            self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), index)
+                        else:
+                            self.training_table.setItem(row, column+1, QTableWidgetItem('BOOKED'))
+                    else:
+                        index = QRadioButton("Book")
+                        self.training_table.setIndexWidget(self.training_table.model().index(row, column+1), index)
 
         self.layout.addWidget(self.training_table)
         self.layout.addWidget(self.update_button)
@@ -179,9 +206,34 @@ class bookTrainingPopup(QDialog):
         #have update buttons, 
         #remove if there is an existitng one, then add
     
+    def update_trainer_sessions(self):
+        func = functions()
 
-    def update_trainer_sessions():
+        for row in range(self.training_table.rowCount()):
 
-        #delete old, add new
+            time_item = self.training_table.item(row, 0)
+            if time_item:
+                time_string = time_item.text() 
+            else: 
+                time_string = None
+
+            for column in range(1, self.training_table.columnCount()):
+                button = self.training_table.cellWidget(row, column)
+                if isinstance(button, QRadioButton) and button.isChecked():
+                    day = self.training_table.horizontalHeaderItem(column).text()
+                    
+                    if time_string:
+                        start_time_string = time_string.split(" - ")[0]
+
+                        current_date = datetime(2024,4,9)
+                        start_time_hour, start_time_minute = map(int, start_time_string.split(":"))
+                        date = datetime(current_date.year, current_date.month, current_date.day, start_time_hour, start_time_minute)
+
+                        if self.prevBook != None:
+                            func.removeTrainingSession(day =self.prevBook[0], date = self.prevBook[1], trainer_id=self.trainer) #remove previous
+                        func.addTrainingSession(day = day, date = date, trainer_id= self.trainer) #add new session
+
+                        QMessageBox.information(self, "Successful Update of booking!", "Successful Update of booking!")
+                        return
         return
     
