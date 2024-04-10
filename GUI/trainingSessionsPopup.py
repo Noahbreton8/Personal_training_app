@@ -1,5 +1,5 @@
 from functionImplemenation import functions
-from PyQt5.QtWidgets import QMessageBox, QPushButton, QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QTimeEdit
+from PyQt5.QtWidgets import QRadioButton, QMessageBox, QPushButton, QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QTimeEdit
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import QtCore
 
@@ -80,11 +80,87 @@ class setAvail(QDialog):
             QMessageBox.warning(self, 'Error', 'Failed to change availability:(')
 
 
-#member #1
+#member #4
 class bookTrainingPopup(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Training Sessions (trainers)')
-        layout = QVBoxLayout()
-        layout.addWidget(QLabel('set avaalbity for Training Sessions'))
-        self.setLayout(layout)
+        self.setWindowTitle("Training Sessions (trainers)")
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(QLabel("Book availability for Training Sessions"))
+        self.trainer = ""
+        self.func = functions()
+
+        result = self.func.getTrainers()
+        first_name_t1 = result[0][1]
+        last_name_t1 = result[0][2]
+        first_name_t2 = result[1][1]
+        last_name_t2 = result[1][2]
+        self.trainer1_button = QRadioButton(first_name_t1 + " " + last_name_t1)
+        self.trainer2_button = QRadioButton(first_name_t2 + " " + last_name_t2)
+
+        self.select_button = QPushButton("Select Trainer")
+        self.select_button.setDisabled(True)
+
+        self.layout.addWidget(self.trainer1_button)
+        self.layout.addWidget(self.trainer2_button)
+        self.layout.addWidget(self.select_button)
+
+        self.trainer1_button.toggled.connect(self.update_select_button_state)
+        self.trainer2_button.toggled.connect(self.update_select_button_state)
+
+        self.select_button.clicked.connect(self.display_trainer_sessions)
+
+        self.update_button = QPushButton("Update!")
+        self.update_button.clicked.connect(self.update_trainer_sessions)
+
+        self.setLayout(self.layout)
+
+    def update_select_button_state(self):
+        # Enable the button only if one of the radio buttons is selected
+        self.select_button.setEnabled(self.trainer1_button.isChecked() or self.trainer2_button.isChecked())
+
+    def display_trainer_sessions(self):
+        if self.trainer1_button.isChecked():
+            self.trainer = 1
+        elif self.trainer2_button.isChecked():
+            self.trainer = 2
+        self.select_button.setDisabled(True)
+
+        #result = self.func.get_trainer_sessions(self.trainer)
+        result = 1
+
+        if result is not None:
+            self.training_table = QTableWidget()
+            self.training_table.setMinimumSize(QSize(950, 305))
+            self.training_table.setColumnCount(8)
+            self.training_table.setHorizontalHeaderLabels(["Times", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
+
+            time_slots = ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00"]
+            self.training_table.setRowCount(len(time_slots))
+            for row, time_slot in enumerate(time_slots):
+                self.training_table.setItem(row, 0, QTableWidgetItem(time_slot))
+                
+            
+            #fill out the busy and unavailable time slots
+            for row in range(0, self.training_table.rowCount()):
+                for column in range(1, self.training_table.columnCount()):
+                    index11 = QRadioButton("Book")
+                    #self.training_table.setItem(row, column, QTableWidgetItem(selecte))
+                    self.training_table.setIndexWidget(self.training_table.model().index(row, column), index11)
+
+        self.layout.addWidget(self.training_table)
+        self.layout.addWidget(self.update_button)
+
+        return
+
+        #show trainer selection and auto select the current training booked if any, based on trainer selection query all possible slots
+        #display all slots as selectable options 
+        #have update buttons, 
+        #remove if there is an existitng one, then add
+    
+
+    def update_trainer_sessions():
+
+        #delete old, add new
+        return
+    

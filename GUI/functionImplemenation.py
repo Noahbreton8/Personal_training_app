@@ -242,6 +242,21 @@ class functions:
         print(returnVal)
 
 
+    #4
+    def getTrainers(self):
+        query = "SELECT * FROM trainers"
+
+        result = self.execute_query(query)
+        if result == []:
+            print("no trainers")
+        else:
+            print("trainers collected")
+            print(result)
+            return result
+        
+    def getTrainerSessions(self):
+        #todo
+        return
 
     ###
     ### TRAINER FUNCTIONS
