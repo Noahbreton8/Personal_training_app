@@ -135,7 +135,7 @@ def book_training():
     dialog = bookTrainingPopup()
     dialog.exec_()
     
-# trainer functiom
+# trainer function
 def member_profile_viewing():
     dialog = viewMembersPopup()
     dialog.exec_()
