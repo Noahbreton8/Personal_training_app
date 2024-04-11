@@ -1,6 +1,7 @@
 #billing for admin
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QMessageBox, QPushButton, QDialog, QVBoxLayout, QLabel
 from functionImplementation import functions
+import memberId
 
 class manageBilingPopup(QDialog):
     def __init__(self):
@@ -13,23 +14,33 @@ class manageBilingPopup(QDialog):
 class makePaymentsPopup(QDialog):
     def __init__(self):
         super().__init__()
-        
-        func = functions
+        func = functions()
 
-        layout = QVBoxLayout()
         self.setWindowTitle("Make Payment")
-
-        result = func.checkMemberPaid()
-
-        #test by remaking db, trying to pay as a member
-
+        layout = QVBoxLayout()
+        
+        result = func.checkMemberPaid(memberId=memberId.memberId)
 
         #display nothing to pay
-       # if :
-        #    layout.addWidget(QLabel("Nothing to pay!"))
-        # else: #display amount with pay button
-        #     layout.addWidget(QLabel("Ammount due: 25.99$ - One standard membership fee"))
-        #     pay_fees_button = QPushButton("Pay")
-        #     layout.addWidget(pay_fees_button)
-        #     pay_fees_button.clicked.connect(func.makePayment())
+        if result == 0:
+           layout.addWidget(QLabel("Nothing to pay!"))
+
+        elif result == -1:
+            amount = func.getPayment()[0][0]
+            layout.addWidget(QLabel("Ammount due: " + str(amount) + "$ - One standard membership fee"))
+            pay_fees_button = QPushButton("Pay")
+            layout.addWidget(pay_fees_button)
+            pay_fees_button.clicked.connect(lambda: makePayment(self))
+
         self.setLayout(layout)
+
+def makePayment(self):
+    func = functions()
+    result = func.makePayment()
+
+    if result == 0:
+        QMessageBox.information(self, "Successful payment", "Successful payment!") 
+    else:
+        QMessageBox.information(self, "Payment failed", "Payment failed!") 
+
+    self.accept()

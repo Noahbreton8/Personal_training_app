@@ -7,7 +7,7 @@ from monitorEquipmentPopup import monitorEquipmentPopup, manageRoomsPopup
 from scheduleGroupClassesPopup import registerGroupClassesPopup , updateGroupClassesPopup
 from trainingSessionsPopup import setAvail, bookTrainingPopup
 from viewMembersPopup import viewMembersPopup, manageProfilePopup
-from billingAndPaymentPopup import manageBilingPopup
+from billingAndPaymentPopup import manageBilingPopup, makePaymentsPopup
 from functionImplementation import functions
 import memberId
 
@@ -54,6 +54,7 @@ def show_main_window(user_type, first_name, last_name):
         profile_management_button = QPushButton("Profile Management")
         manage_schedule_button = QPushButton("Register for Classes")
         book_training_button = QPushButton("Book Training")
+        make_payment_button = QPushButton("Make Payment")
 
         member_functions_layout = QVBoxLayout()
 
@@ -65,6 +66,9 @@ def show_main_window(user_type, first_name, last_name):
 
         manage_schedule_button.clicked.connect(book_classes)
         member_functions_layout.addWidget(manage_schedule_button)
+
+        make_payment_button.clicked.connect(make_payment)
+        member_functions_layout.addWidget(make_payment_button)
 
         member_group.setLayout(member_functions_layout)
         gui_layout.addWidget(member_group)
@@ -132,6 +136,10 @@ def book_classes():
 
 def book_training():
     dialog = bookTrainingPopup()
+    dialog.exec_()
+
+def make_payment():
+    dialog = makePaymentsPopup()
     dialog.exec_()
     
 # trainer function

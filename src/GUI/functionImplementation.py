@@ -83,13 +83,13 @@ class functions:
                 print("Member already exists or logging in")
                 return row[0]
         
-        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, height, current_weight, amount, payment_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 
         # 0 is the amount due and should be 0 initially
         if(weight == '0' and height == '0'):
             return -2
         
-        parameters = (firstName, lastName, phoneNumber, email, 0, height.text(), weight.text())
+        parameters = (firstName, lastName, phoneNumber, email, height.text(), weight.text(), 70.00, 'Unpaid')
         result = self.execute_query(addMember, parameters)
         if result == -1:
             print("could not insert")
@@ -258,15 +258,29 @@ class functions:
         params = (memberid,)
 
         result = self.execute_query(query, params)
-        if result == []:
+        if result == None:
             print("update paid status")
+            return 0
         else:
             print("failed to update paid status")
+            print(result)
+            return -1
+    
+    
+    def getPayment(self):
+        query = "Select amount FROM members WHERE member_id = '%s'"
+        memberid = memberId.memberId
+
+        params = (memberid,)
+
+        result = self.execute_query(query, params)
+        if result == []:
+            print("failed to get amount")
+        else:
             print(result)
             return result
 
         return
-
 
     ###
     ### TRAINER FUNCTIONS
@@ -525,8 +539,8 @@ class functions:
 
     #4
     def checkMemberPaid(self, memberId):
-        query = "SELECT payment_status FROM Members WHERE member_id = %s"
-        parameters = (memberId)
+        query = "SELECT payment_status FROM Members WHERE member_id = '%s'"
+        parameters = (memberId,)
         result = self.execute_query(query, parameters)
 
         if result[0][0] == 'Paid':
