@@ -272,7 +272,7 @@ class functions:
 
     #2
     def getMember(self, firstName, lastName):
-        query = "SELECT first_name, last_name, phone_number, email, current_weight, height, description FROM Members WHERE first_name = %s AND last_name = %s"
+        query = "SELECT first_name, last_name, phone_number, email, current_weight, height FROM Members WHERE first_name = %s AND last_name = %s"
         parameters = (firstName, lastName)
         result = self.execute_query(query, parameters)
         if result == []:
@@ -486,10 +486,22 @@ class functions:
         print(result)
         return result
 
-    
+    def checkMemberPaid(self, memberId):
+        query = "SELECT payment_status FROM Members WHERE member_id = %s"
+        parameters = (memberId)
+        result = self.execute_query(query, parameters)
+
+        if result[0][0] == 'Paid':
+            print("paid")
+            return 0
+        else:
+            print("unpaid")
+            return -1
+
 
 functions_instance = functions()
-#functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")
+functions_instance.checkMemberPaid("1")
+# functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")
 #functions_instance.trainerRegistration("Trainer", "1", 6137654321, "t1@gmail.com")
 #functions_instance.adminRegistration("Admin", "1", 6137162534, "a1@gmail.com")
 #functions_instance.updateFirstName(1, "New")
@@ -500,9 +512,9 @@ functions_instance = functions()
 #functions_instance.updateWeight(1, 200)
 #functions_instance.addFitnessGoal(1, "reach 250 pounds")
 #functions_instance.addToAchievements(1, "reach 250 pounds")
-#functions_instance.getAllAchievements(1)
+# functions_instance.getAllAchievements(1)
 #functions_instance.getHealthStats(1)
 #functions_instance.getExerciseRoutines(1)
-#functions_instance.getMember("Member", "1")
+# functions_instance.getMember("Alice", "Johnson")
 #functions_instance.setUpTrainingSession(1, 'Monday', "09:00", "15:00")
 #functions_instance.updateTrainerSessions("Kylian", "Mbappe", "Monday", 11, 13)
