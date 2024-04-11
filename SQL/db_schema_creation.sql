@@ -69,7 +69,7 @@ CREATE TABLE Register (
     member_id INT,
     FOREIGN KEY (member_id) REFERENCES Members(member_id),
     FOREIGN KEY (class_id) REFERENCES Classes(class_id)
-)
+);
 
 CREATE TABLE Updates (
     -- update_id SERIAL PRIMARY KEY,

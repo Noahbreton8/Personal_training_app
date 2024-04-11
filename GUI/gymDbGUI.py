@@ -144,11 +144,6 @@ def set_avail():
     dialog = setAvail()
     dialog.exec_()
 
-def schedule_classes():
-    print("Schedule Classes")
-    dialog = scheduleGroupClassesPopup()
-    dialog.exec_()
-
 # admin functions
 def room_booking_management():
     print("Room Booking Management")

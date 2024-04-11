@@ -1,9 +1,10 @@
 #should have both updating (for admin)
 #and register (for users)
 from functionImplemenation import functions
+import memberId
 
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QMessageBox
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QMessageBox, QRadioButton, QPushButton
+from PyQt5.QtCore import QSize
 
 class registerGroupClassesPopup(QDialog):
     def __init__(self):
@@ -12,6 +13,50 @@ class registerGroupClassesPopup(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Register for Classes"))
         self.setLayout(layout)
+
+        func = functions()
+        result = func.getActiveClasses()
+
+        if result != -1:
+            self.classes_table = QTableWidget()
+            self.classes_table.setMinimumSize(QSize(400, 200))
+            self.classes_table.setColumnCount(3)
+            self.classes_table.setHorizontalHeaderLabels(["Class Name", "Class Time", "Registration"])
+
+            self.classes_table.setRowCount(len(result))
+
+            for i in range(len(result)):
+                self.classes_table.setItem(i, 0, QTableWidgetItem(result[i][1]))
+
+                self.classes_table.setItem(i, 1, QTableWidgetItem(result[i][2].strftime('%Y-%m-%d %H:%M:%S')))
+
+                if (func.isMemberInClass(memberId.memberId, result[i][0])):
+                    self.classes_table.setItem(i, 2, QTableWidgetItem("ALREADY REGISTERED"))
+                else:
+                    index = QRadioButton("Register")
+                    self.classes_table.setIndexWidget(self.classes_table.model().index(i, 2), index)
+
+            layout.addWidget(self.classes_table)
+            self.update_button = QPushButton("Update!")
+            self.update_button.clicked.connect(self.update_class_registration)
+            layout.addWidget(self.update_button)
+
+        else:
+            layout.addWidget(QLabel("No classes open for registration"))
+
+        return
+    
+    def update_class_registration(self):
+        func = functions()
+
+        for i in range(self.classes_table.rowCount()):
+            button = self.classes_table.cellWidget(i, 2)
+            if isinstance(button, QRadioButton) and button.isChecked():
+                class_name = self.classes_table.item(i, 0).text()
+                func.updateClassesRegistration(memberId.memberId, class_name)
+
+                QMessageBox.information(self, "Successful Class Registration!", "Successful Class Registration!")
+                return
 
 class updateGroupClassesPopup(QDialog):
     def __init__(self):
