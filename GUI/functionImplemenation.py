@@ -5,7 +5,7 @@ from datetime import datetime
 import memberId
 
 #posgresql credentials
-DATABASE_NAME = "test"
+DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
 DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
@@ -462,9 +462,11 @@ class functions:
         realColumnName = column_name_parts[0] + "_" + column_name_parts[1]
         query = f"UPDATE Classes SET {realColumnName.lower()} = %s WHERE class_name = %s"
 
-        newTime = datetime.strptime(newVal, '%Y-%m-%d %H:%M:%S')
+        if (newVal != None):
+            newVal = datetime.strptime(newVal, '%Y-%m-%d %H:%M:%S')
 
-        parameters = (newTime, class_name)
+
+        parameters = (newVal, class_name)
 
         result = self.execute_query(query, parameters)
 
@@ -476,7 +478,7 @@ class functions:
             return 1
         
     def getActiveClasses(self):
-        query = "SELECT class_name, class_time FROM Classes WHERE class_time != 'None'"
+        query = "SELECT * FROM Classes WHERE class_time IS NOT NULL"
         result = self.execute_query(query)
         if result == []:
             print("No classes")
@@ -485,6 +487,26 @@ class functions:
         print("Here are the active classes")
         print(result)
         return result
+    
+    def isMemberInClass(self, member_id, class_id):
+        query = "SELECT * FROM Register WHERE class_id = '%s' AND member_id = '%s'"
+        params = (class_id, member_id)
+        result = self.execute_query(query, params)
+        if result == []:
+            return False
+        return True
+    
+    def updateClassesRegistration(self, member_id, class_name):
+        query = "SELECT class_id FROM Classes WHERE class_name = %s"
+        params = (class_name,)
+        class_id = self.execute_query(query, params)[0][0]
+
+        query = "INSERT INTO Register (class_id, member_id) VALUES (%s, %s)"
+        params=(class_id, member_id)
+        result = self.execute_query(query, params)
+
+        print()
+
 
     def checkMemberPaid(self, memberId):
         query = "SELECT payment_status FROM Members WHERE member_id = %s"
