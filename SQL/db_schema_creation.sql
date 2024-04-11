@@ -64,6 +64,13 @@ CREATE TABLE Classes (
     class_time TIMESTAMP
 );
 
+CREATE TABLE Register (
+    class_id INT,
+    member_id INT,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (class_id) REFERENCES Classes(class_id)
+)
+
 CREATE TABLE Updates (
     -- update_id SERIAL PRIMARY KEY,
     admin_id INT,

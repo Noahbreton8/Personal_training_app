@@ -225,23 +225,6 @@ class functions:
             print("exercises collected")
             print(result)
             return result
-        
-    # #4
-    # def setUpTrainingSession(self, trainerId, dayOfWeek, startTime):
-    #     #maybe 1 hour long increments?
-    #     #assumming the dates look like: HH:MM where minutes are always 00
-    #     query = "SELECT start_time, end_time FROM availability WHERE trainer_id = '%s' AND day_of_week = %s"
-    #     params = (trainerId, dayOfWeek)
-    #     returnVal = self.execute_query(query, params)
-    #     availableStart = returnVal[0]
-    #     startHour = availableStart[3]
-    #     availableEnd = returnVal[1]
-    #     endHour = availableEnd[3]
-
-
-
-    #     print(returnVal)
-
 
     #4
     def getTrainers(self):
@@ -461,6 +444,47 @@ class functions:
             print("failed to update room")
         else:
             print("updateRoom")
+
+    #3
+    def getClasses(self):
+        query = "SELECT class_name, class_time FROM Classes"
+        result = self.execute_query(query)
+        if result == []:
+            print("No classes")
+            return -1
+        
+        print("Here are the classes")
+        print(result)
+        return result
+    
+    def updateClassValue(self, class_name, column_name, newVal):
+        column_name_parts = column_name.split(" ")
+        realColumnName = column_name_parts[0] + "_" + column_name_parts[1]
+        query = f"UPDATE Classes SET {realColumnName.lower()} = %s WHERE class_name = %s"
+
+        newTime = datetime.strptime(newVal, '%Y-%m-%d %H:%M:%S')
+
+        parameters = (newTime, class_name)
+
+        result = self.execute_query(query, parameters)
+
+        if result == -1:
+            print("failed to update class")
+            return None
+        else:
+            print("class updated")
+            return 1
+        
+    def getActiveClasses(self):
+        query = "SELECT class_name, class_time FROM Classes WHERE class_time != 'None'"
+        result = self.execute_query(query)
+        if result == []:
+            print("No classes")
+            return -1
+        
+        print("Here are the active classes")
+        print(result)
+        return result
 
     
 

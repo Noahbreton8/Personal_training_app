@@ -3,9 +3,8 @@ from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QApplication, QWidget, QVBox
 import psycopg2
 from userSelectionPopup import UserTypeSelectionPopup
 from loginRegisterPopup import LoginRegisterPopup
-from scheduleGroupClassesPopup import scheduleGroupClassesPopup
 from monitorEquipmentPopup import monitorEquipmentPopup, manageRoomsPopup
-from scheduleGroupClassesPopup import scheduleGroupClassesPopup, registerGroupClassesPopup , updateGroupClassesPopup
+from scheduleGroupClassesPopup import registerGroupClassesPopup , updateGroupClassesPopup
 from trainingSessionsPopup import setAvail, bookTrainingPopup
 from viewMembersPopup import viewMembersPopup, manageProfilePopup
 from billingAndPaymentPopup import manageBilingPopup
