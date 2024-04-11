@@ -520,19 +520,31 @@ class functions:
             print("unpaid")
             return -1
         
-    def toggleMemberPaymentStatus(self, billing_id, paymentStatus):
+    def toggleMemberPaymentStatus(self, billing_id):
+        query = "SELECT payment_status FROM Members WHERE billing_id = %s"
+        parameters = (billing_id)
+        result = self.execute_query(query, parameters)
+
+        if result[0][0] == 'Paid':
+            paymentStatus = "Unpaid"
+        else:
+            paymentStatus = "Paid"
+
         query = f"UPDATE Members SET payment_status = %s WHERE billing_id = %s"
         parameters = (paymentStatus, billing_id)
 
         result = self.execute_query(query, parameters)
+
         if result == -1:
             print("failed to toggle member payment status")
         else:
-            print("updateMemberPaymentStatus")
+            print(f"Toggled member payment status to {paymentStatus}")
 
 
 functions_instance = functions()
-functions_instance.checkMemberPaid("1")
+# functions_instance.checkMemberPaid("1")
+# functions_instance.toggleMemberPaymentStatus("1")
+# functions_instance.checkMemberPaid("1")
 # functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")
 #functions_instance.trainerRegistration("Trainer", "1", 6137654321, "t1@gmail.com")
 #functions_instance.adminRegistration("Admin", "1", 6137162534, "a1@gmail.com")
