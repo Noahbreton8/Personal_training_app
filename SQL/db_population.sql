@@ -1,6 +1,7 @@
 INSERT INTO Admins (first_name, last_name, email, phone_number)
 VALUES
-('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230');
+('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230'),
+('Victor', 'Sandru', 'victorsandru@gmail.com', '6131234567');
 
 INSERT INTO Members (first_name, last_name, phone_number, email, height, current_weight, amount, payment_status)
 VALUES
@@ -28,14 +29,35 @@ VALUES
 ('Free', 'Personal Training', 104, '2024-06-22'),
 ('Free', 'Personal Training', 105, '2024-06-22');
 
--- INSERT INTO Class_Schedule (room_number, status, class_time)
--- VALUES
--- (106, 'Good', '2024-06-23');
+INSERT INTO Monitor (admin_id, equipment_id)
+VALUES
+(1,1),
+(1,2),
+(1,3),
+(1,4),
+(1,5),
+(2,1),
+(2,2),
+(2,3),
+(2,4),
+(2,5);
 
--- INSERT INTO Training_Session (status, session_time, trainer_id, member_id)
--- VALUES
--- ('Finished', '2024-04-03', 1, 1),
--- ('Finished', '2024-04-03', 2, 2);
+INSERT INTO Manages (admin_id, booking_id)
+VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5); --admin 1 deals with room bookings
+
+INSERT INTO Classes (class_name)
+VALUES
+('Boxing'), ('Yoga'), ('Fitness'), ('Spin Class');
+
+INSERT INTO Updates (admin_id, class_id)
+VALUES
+(2,1), (2,2), (2,3), (2,4); --admin 2 deals with classes
+
+INSERT INTO Oversees (admin_id, billing_id)
+VALUES
+(1, 1),
+(1, 2); --admin 1 deals with the billing information
 
 INSERT INTO Exercise (name, reps, sets, member_id)
 VALUES
@@ -46,19 +68,6 @@ INSERT INTO Fitness_Goal (member_id, fitness_goal)
 VALUES
 (1, 'lose weight and hit 225 on bench'),
 (2, 'gain weight and hit 5 plates on squat');
-
-INSERT INTO Oversees (admin_id, billing_id)
-VALUES
-(1, 1),
-(1, 2);
-
-INSERT INTO Monitor (admin_id, equipment_id)
-VALUES
-(1,1),
-(1,2),
-(1,3),
-(1,4),
-(1,5);
 
 --trainer 1
 INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
