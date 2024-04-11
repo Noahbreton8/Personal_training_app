@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QRadioButton, QMessageBox
 import psycopg2
-from GUI.functionImplementation import functions
+from functionImplementation import functions
 import memberId
 
 #login or register as member/admin/trainer

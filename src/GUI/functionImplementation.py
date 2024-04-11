@@ -5,9 +5,9 @@ from datetime import datetime
 import memberId
 
 #postgresql credentials
-DATABASE_NAME = "final"
+DATABASE_NAME = "finalProject"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+DATABASE_PASSWORD = "student"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -249,8 +249,24 @@ class functions:
             print("training sessions found")
             print(result)
             return result
+        return
+    
+    def makePayment(self):
+        query = "UPDATE members SET payment_status = 'Paid' WHERE member_id = '%s'"
+        memberid = memberId.memberId
+
+        params = (memberid,)
+
+        result = self.execute_query(query, params)
+        if result == []:
+            print("update paid status")
+        else:
+            print("failed to update paid status")
+            print(result)
+            return result
 
         return
+
 
     ###
     ### TRAINER FUNCTIONS
