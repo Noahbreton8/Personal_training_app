@@ -5,9 +5,9 @@ from datetime import datetime
 import memberId
 
 #posgresql credentials
-DATABASE_NAME = "finalProject"
+DATABASE_NAME = "test"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "student"
+DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -83,7 +83,7 @@ class functions:
                 print("Member already exists or logging in")
                 return row[0]
         
-        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight, description) VALUES (%s, %s, %s, %s, %s, %s, %s, '')"
+        addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, amount, height, current_weight) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
         # 0 is the amount due and should be 0 initially
         if(weight == '0' and height == '0'):
