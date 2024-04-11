@@ -8,7 +8,7 @@ from scheduleGroupClassesPopup import registerGroupClassesPopup , updateGroupCla
 from trainingSessionsPopup import setAvail, bookTrainingPopup
 from viewMembersPopup import viewMembersPopup, manageProfilePopup
 from billingAndPaymentPopup import manageBilingPopup
-from functionImplemenation import functions
+from GUI.functionImplementation import functions
 import memberId
 
 def show_main_window(user_type, first_name, last_name):

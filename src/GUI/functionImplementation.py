@@ -4,7 +4,7 @@ import psycopg2
 from datetime import datetime
 import memberId
 
-#posgresql credentials
+#postgresql credentials
 DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
 DATABASE_PASSWORD = "postgres"

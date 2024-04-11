@@ -1,4 +1,4 @@
-from functionImplemenation import functions
+from GUI.functionImplementation import functions
 from PyQt5.QtWidgets import QRadioButton, QMessageBox, QPushButton, QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QTimeEdit
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import QtCore

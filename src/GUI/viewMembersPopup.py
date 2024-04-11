@@ -1,6 +1,6 @@
 #should have viewing/managing (for trainers)
 from PyQt5.QtWidgets import QTextEdit, QMessageBox, QDialog, QVBoxLayout, QLabel,QLineEdit, QHBoxLayout, QPushButton, QFormLayout
-from functionImplemenation import functions
+from GUI.functionImplementation import functions
 import memberId
 
 class viewMembersPopup(QDialog):

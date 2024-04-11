@@ -1,7 +1,7 @@
 #for admins monitoring equiptment
 from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QGroupBox, QHBoxLayout, QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QRadioButton, QMessageBox
 from PyQt5.QtCore import QSize, Qt
-from functionImplemenation import functions
+from GUI.functionImplementation import functions
 
 class monitorEquipmentPopup(QDialog):
     def __init__(self):

@@ -1,6 +1,6 @@
 #should have both updating (for admin)
 #and register (for users)
-from functionImplemenation import functions
+from GUI.functionImplementation import functions
 import memberId
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QMessageBox, QRadioButton, QPushButton
