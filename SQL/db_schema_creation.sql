@@ -41,7 +41,6 @@ CREATE TABLE Room_Bookings (
     booking_time TIMESTAMP
 );
 
-
 CREATE TABLE Monitor (
     -- monitor_id SERIAL PRIMARY KEY,
     admin_id INT,
