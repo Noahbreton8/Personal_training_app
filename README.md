@@ -13,7 +13,7 @@ Marco Toito, Noah Breton, Victor Sandru
 
 ## Steps to run:
 
-Without Docker
+#### Without Docker
 
 -   `pip3 install -r requirements.txt` on \*nix systems or `pip install -r requirements.txt` on Windows
 -   `createdb final`
@@ -22,7 +22,7 @@ Without Docker
 -   `psql -U postgres -d final -f src/SQL/02_db_population.sql`
 -   `python3 src/GUI/gymDbGUI.py`
 
-With Docker
+#### With Docker
 
 On \*nix systems
 
