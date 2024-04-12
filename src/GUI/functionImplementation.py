@@ -555,8 +555,8 @@ class functions:
         query = "SELECT payment_status FROM Members WHERE member_id = %s"
         parameters = (memberId)
         result = self.execute_query(query, parameters)
-        print(type(result))
-        print(result)
+
+
         if result[0][0] == 'Paid':
             print("paid")
             return 0
