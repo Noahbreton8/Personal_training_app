@@ -1,12 +1,12 @@
-INSERT INTO Admins (first_name, last_name, email, phone_number)
+INSERT INTO Admins (first_name, last_name, phone_number)
 VALUES
-('John', 'Lakeman', 'johnlakeman@gmail.com', '4165512230'),
-('Victor', 'Sandru', 'victorsandru@gmail.com', '6131234567');
+('john', 'lakeman', '4165512230'),
+('victor', 'sandru', '6131234567');
 
 INSERT INTO Members (first_name, last_name, phone_number, email, height, current_weight, amount, payment_status)
 VALUES
-('Alice', 'Johnson', '555-123-4567', 'alice.johnson@example.com', 170, 65, 50.00, 'Paid'),
-('Bob', 'Williams', '555-987-6543', 'bob.williams@example.com', 180, 75, 70.00, 'Paid');
+('alice', 'johnson', '555-123-4567', 'alice.johnson@example.com', 170, 65, 50.00, 'Paid'),
+('bob', 'williams', '555-987-6543', 'bob.williams@example.com', 180, 75, 70.00, 'Paid');
 
 INSERT INTO Equipment (equipment_name, maintenance_status)
 VALUES
@@ -16,10 +16,10 @@ VALUES
 ('Pec Deck', 'Good'),
 ('Treadmill', 'Bad');
 
-INSERT INTO Trainers (first_name, last_name, phone_number, email)
+INSERT INTO Trainers (first_name, last_name, phone_number)
 VALUES
-('Kylian', 'Mbappe', '123456789', 'mbappe@psg.com'),
-('Robert', 'Lewandowski', '123456789', 'balondor2020@gmail.com');
+('kylian', 'mbappe', '123456789'),
+('robert', 'lewandowski', '123456789');
 
 INSERT INTO Room_Bookings (status, purpose, room_number, booking_time)
 VALUES

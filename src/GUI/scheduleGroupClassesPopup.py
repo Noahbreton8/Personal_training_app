@@ -109,8 +109,9 @@ class updateGroupClassesPopup(QDialog):
        
         func = functions()
         result = func.updateClassValue(class_name, column_name, value)
-        
-        if result != None:
+        if result == -1:
+            QMessageBox.information(self, "Error", "Input a class time in this format: YYYY-mm-DD HH:MM") 
+        elif result != None:
             QMessageBox.information(self, "Class", "Class Updated!")  
         else: 
             QMessageBox.warning(self, "Error", "Failed to update class.")

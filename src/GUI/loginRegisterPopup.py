@@ -19,8 +19,10 @@ class LoginRegisterPopup(QDialog):
         layout.addWidget(self.first_name)
         layout.addWidget(QLabel("Last Name:"))
         layout.addWidget(self.last_name)
-        layout.addWidget(QLabel("Email:"))
-        layout.addWidget(self.email)
+
+        if self.user_type == "member":
+            layout.addWidget(QLabel("Email:"))
+            layout.addWidget(self.email)
 
         if self.user_type == "member":
             login_button = QPushButton("Login")
@@ -73,7 +75,7 @@ class LoginRegisterPopup(QDialog):
         if self.user_type == 'member':
             retur = func.memberRegistration(firstName=self.first_name.text(), lastName= self.last_name.text(), email=self.email.text(), height=getattr(self, 'tallness', '0'), weight=getattr(self, 'weight', '0'), phoneNumber="123")
         if self.user_type == 'trainer':
-            retur = func.trainerLogin(firstName=self.first_name.text(), lastName= self.last_name.text(), email=self.email.text(), phoneNumber="123")
+            retur = func.trainerLogin(firstName=self.first_name.text(), lastName= self.last_name.text(), phoneNumber="123")
         if self.user_type == 'admin':
              retur = func.adminLogin(firstName=self.first_name.text(), lastName= self.last_name.text())
 
