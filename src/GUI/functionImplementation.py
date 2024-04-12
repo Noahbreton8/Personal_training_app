@@ -5,9 +5,9 @@ from datetime import datetime
 import memberId
 
 #postgresql credentials
-DATABASE_NAME = "finalProject"
+DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "student"
+DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -57,7 +57,7 @@ class functions:
         
     def get_trainer_id(self, first_name, last_name):
         query = "SELECT trainer_id FROM Trainers WHERE first_name = %s AND last_name = %s;"
-        params = (first_name, last_name)
+        params = (first_name.lower(), last_name.lower())
         result = self.execute_query(query, params)
         if result != -1 and result:
             #print("current trainer id" + str(result[0][0]))
@@ -79,7 +79,7 @@ class functions:
             return -1
 
         for row in rows:
-            if (row[1], row[2], row[3]) == (firstName, lastName, email):
+            if (row[1].lower(), row[2].lower(), row[3].lower()) == (firstName.lower(), lastName.lower(), email.lower()):
                 print("Member already exists or logging in")
                 return row[0]
         
@@ -89,7 +89,7 @@ class functions:
         if(weight == '0' and height == '0'):
             return -2
         
-        parameters = (firstName, lastName, phoneNumber, email, height.text(), weight.text(), 70.00, 'Unpaid')
+        parameters = (firstName.lower(), lastName.lower(), phoneNumber, email, height.text(), weight.text(), 70.00, 'Unpaid')
         result = self.execute_query(addMember, parameters)
         if result == -1:
             print("could not insert")
@@ -285,8 +285,8 @@ class functions:
     ###
     ### TRAINER FUNCTIONS
     ###
-    def trainerLogin(self, firstName, lastName, phoneNumber, email):
-        query = "SELECT first_name, last_name, phone_number, email FROM trainers"
+    def trainerLogin(self, firstName, lastName, phoneNumber):
+        query = "SELECT first_name, last_name, phone_number FROM trainers"
         rows = self.execute_query(query)
 
         if rows == -1:
@@ -294,7 +294,7 @@ class functions:
             return -1
 
         for i in range(len(rows)):
-            if rows[i][0] == firstName and rows[i][1] == lastName:
+            if rows[i][0].lower() == firstName.lower() and rows[i][1].lower() == lastName.lower():
                 #maybe turn into pop up?
                 print("successful login")
                 return 0
@@ -302,6 +302,8 @@ class functions:
 
     #2
     def getMember(self, firstName, lastName):
+        firstName = firstName.lower()
+        lastName = lastName.lower()
         query = "SELECT first_name, last_name, phone_number, email, current_weight, height FROM Members WHERE first_name = %s AND last_name = %s"
         parameters = (firstName, lastName)
         result = self.execute_query(query, parameters)
@@ -412,7 +414,7 @@ class functions:
     ### ADMIN FUNCTIONS
     ###
     def adminLogin(self, firstName, lastName):
-        query = "SELECT first_name, last_name, phone_number, email FROM admins"
+        query = "SELECT first_name, last_name, phone_number FROM admins"
         rows = self.execute_query(query)
 
         if rows == -1:
@@ -420,7 +422,7 @@ class functions:
             return -1
 
         for i in range(len(rows)):
-            if rows[i][0] == firstName and rows[i][1] == lastName:
+            if rows[i][0].lower() == firstName.lower() and rows[i][1].lower() == lastName.lower():
                 #maybe turn into pop up?
                 print("successful login")
                 return 0
@@ -493,7 +495,10 @@ class functions:
         query = f"UPDATE Classes SET {realColumnName.lower()} = %s WHERE class_name = %s"
 
         if (newVal != None):
-            newVal = datetime.strptime(newVal, '%Y-%m-%d %H:%M:%S')
+            try:
+                newVal = datetime.strptime(newVal, '%Y-%m-%d %H:%M')
+            except:
+                return -1
 
 
         parameters = (newVal, class_name)
