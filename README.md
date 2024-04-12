@@ -24,4 +24,10 @@ Without Docker
 
 With Docker
 
+On \*nix systems
+
 -   `./dockerSetup.sh`
+
+On Windows
+
+-   run the `windowsSetup.bat` executable
