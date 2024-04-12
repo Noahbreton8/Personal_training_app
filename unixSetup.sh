@@ -1,4 +1,5 @@
 ##!/usr/bin/env bash
+docker build -t 3005final71 .
 
 docker-compose up -d
 

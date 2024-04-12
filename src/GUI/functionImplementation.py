@@ -5,9 +5,9 @@ from datetime import datetime
 import memberId
 
 #postgresql credentials
-DATABASE_NAME = "final"
+DATABASE_NAME = "finalProject"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "postgres"
+DATABASE_PASSWORD = "student"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -552,10 +552,11 @@ class functions:
 
     #4
     def checkMemberPaid(self, memberId):
-        query = "SELECT payment_status FROM Members WHERE member_id = '%s'"
-        parameters = (memberId,)
+        query = "SELECT payment_status FROM Members WHERE member_id = %s"
+        parameters = (memberId)
         result = self.execute_query(query, parameters)
-
+        print(type(result))
+        print(result)
         if result[0][0] == 'Paid':
             print("paid")
             return 0
@@ -591,8 +592,8 @@ class functions:
 
 
 
-#functions_instance = functions()
-# functions_instance.checkMemberPaid("1")
+functions_instance = functions()
+functions_instance.checkMemberPaid("1")
 # functions_instance.toggleMemberPaymentStatus("1")
 # functions_instance.checkMemberPaid("1")
 # functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")
