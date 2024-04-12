@@ -81,7 +81,7 @@ class functions:
         for row in rows:
             if (row[1].lower(), row[2].lower(), row[3].lower()) == (firstName.lower(), lastName.lower(), email.lower()):
                 print("Member already exists or logging in")
-                return row[0]
+                return 0
         
         addMember = "INSERT INTO members (first_Name, last_Name, phone_number, email, height, current_weight, amount, payment_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 
@@ -94,6 +94,14 @@ class functions:
         if result == -1:
             print("could not insert")
         else:
+            add_oversees_query = "INSERT INTO Oversees (admin_id, billing_id) VALUES (%s, %s)"
+            oversees_params = (1, self.get_member_id(firstName, lastName, email))
+            oversees_result = self.execute_query(add_oversees_query, oversees_params)
+            
+            if oversees_result == -1:
+                print("Failed to update Oversees table.")
+                return -3
+
             print("successfully added new member")
         
         return result
@@ -555,28 +563,35 @@ class functions:
             print("unpaid")
             return -1
         
-    def toggleMemberPaymentStatus(self, billing_id):
-        query = "SELECT payment_status FROM Members WHERE billing_id = %s"
-        parameters = (billing_id)
-        result = self.execute_query(query, parameters)
-
-        if result[0][0] == 'Paid':
-            paymentStatus = "Unpaid"
-        else:
-            paymentStatus = "Paid"
-
-        query = f"UPDATE Members SET payment_status = %s WHERE billing_id = %s"
-        parameters = (paymentStatus, billing_id)
+    def toggleMemberPaymentStatus(self, paymentStatus, firstname, lastname, email):
+        memberId = self.get_member_id(firstname, lastname, email)
+        query = f"UPDATE Members SET payment_status = %s WHERE member_id = '%s'"
+        parameters = (paymentStatus, memberId)
 
         result = self.execute_query(query, parameters)
 
-        if result == -1:
+        if result != None:
             print("failed to toggle member payment status")
         else:
             print(f"Toggled member payment status to {paymentStatus}")
+        return result
+
+    def getMembers(self):
+        query = "SELECT m.first_name, m.last_name, m.email, m.payment_status FROM Members m JOIN Oversees o ON m.billing_id = o.billing_id WHERE o.admin_id = '1';"
+        
+        parameters = ()
+        result = self.execute_query(query, parameters)
+
+        if result == []:
+            print("failed, no members found")
+            return -1
+        else:
+            print("got members")
+            return result
 
 
-functions_instance = functions()
+
+#functions_instance = functions()
 # functions_instance.checkMemberPaid("1")
 # functions_instance.toggleMemberPaymentStatus("1")
 # functions_instance.checkMemberPaid("1")

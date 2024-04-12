@@ -82,9 +82,9 @@ class LoginRegisterPopup(QDialog):
         if retur == 0: #try to register but already exist
             if login:
                 QMessageBox.information(self, "Successful Login", "Welcome!.")
+                login_dialog.accept()
             else:
                  QMessageBox.information(self, "Member Already Registered", "The member is already registered.")
-            login_dialog.accept()
         elif retur == -1:
             QMessageBox.information(self, "", "Bad Input or db connection!.")
         elif retur == -2:
