@@ -69,7 +69,7 @@ class functions:
     #### MEMBER FUNCTIONS
     ####
 
-    ### 1
+    ### m-1
     def memberRegistration(self, firstName, lastName, phoneNumber, email, height=None, weight=None):
         query = "SELECT member_id, first_Name, last_Name, email FROM members"
         rows = self.execute_query(query)
@@ -104,9 +104,9 @@ class functions:
 
             print("successfully added new member")
         
-        return result
+        return self.get_member_id(firstName, lastName, email)
     
-    #2
+    #m-2
     def updateFirstName(self, memberId, newName):
         query = "UPDATE members SET first_name = %s WHERE member_id = '%s'"
         parameters = (newName, memberId)
@@ -183,6 +183,7 @@ class functions:
             print("successfully updated")
         
         return result
+    
     #2
     def addFitnessGoal(self, memberId, goal):
         query = "INSERT INTO fitness_goal (member_id, fitness_goal) VALUES ('%s', %s)"
@@ -194,6 +195,7 @@ class functions:
         else:
             print("fitness goal added")
 
+    #m-3
     def getFitnessGoal(self, memberId):
         query = "SELECT fitness_goal FROM fitness_goal WHERE member_id = '%s'"
         parameters = (memberId,)
@@ -204,6 +206,7 @@ class functions:
         else:
             print("fitness goal gotten")
         return result
+    
     #3
     def getAllAchievements(self, memberId):
         query = "SELECT achievement FROM Achievement WHERE member_id = '%s'"
@@ -244,7 +247,7 @@ class functions:
             print(result)
             return result
 
-    #4
+    #m-4
     def getTrainers(self):
         query = "SELECT * FROM trainers"
 
@@ -255,7 +258,8 @@ class functions:
             print("trainers collected")
             print(result)
             return result
-        
+    
+    #4
     def getTrainerSessions(self, trainer_id):
         query = "SELECT day_of_week, session_time, status, member_id FROM Training_Session WHERE trainer_id = '%s' ORDER BY session_id ASC"
         params = (trainer_id,)
@@ -269,6 +273,7 @@ class functions:
             return result
         return
     
+    #4
     def makePayment(self):
         query = "UPDATE members SET payment_status = 'Paid' WHERE member_id = '%s'"
         memberid = memberId.memberId
@@ -284,7 +289,7 @@ class functions:
             print(result)
             return -1
     
-    
+    #4
     def getPayment(self):
         query = "Select amount FROM members WHERE member_id = '%s'"
         memberid = memberId.memberId
@@ -318,7 +323,7 @@ class functions:
                 return 0
         return -1
 
-    #2
+    #t-2
     def getMember(self, firstName, lastName):
         firstName = firstName.lower()
         lastName = lastName.lower()
@@ -355,7 +360,7 @@ class functions:
         else:
             print("exercise added")
 
-    #1
+    #t-1
     def getAvailability(self, first_name, last_name):
         trainer_id = self.get_trainer_id(first_name, last_name)
         query = "SELECT * FROM Availability WHERE trainer_id = %s"
@@ -412,7 +417,7 @@ class functions:
                 parameters = (trainer_id, day, session_time)
                 self.execute_query(query, parameters)
 
-
+    #1
     def removeTrainingSession(self, day, date, trainer_id):
         query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE day_of_week = %s AND status = 'BOOKED' AND session_time = %s AND trainer_id = '%s'"
         
@@ -425,6 +430,7 @@ class functions:
             print("successful delete")
             return result
 
+    #1
     def addTrainingSession(self, day, date, trainer_id):
         query = "UPDATE Training_Session SET status = 'BOOKED', member_id = '%s' WHERE day_of_week = %s AND session_time = %s AND trainer_id = '%s'"
         parameters = (memberId.memberId, day, date, trainer_id,) 
@@ -455,7 +461,7 @@ class functions:
                 return 0
         return -1
     
-    #2
+    #a-2
     def getEquipment(self, adminId):
         query = "SELECT equipment_id FROM Monitor WHERE admin_id = '%s'"
         parameters = (adminId,)
@@ -479,7 +485,7 @@ class functions:
         print(finalResults)
         return finalResults
 
-    #3
+    #a-1
     def getRooms(self):
         query = "SELECT * FROM Room_Bookings"
         parameters = ()
@@ -493,7 +499,7 @@ class functions:
 
         return result
     
-    #3
+    #1
     def updateRoomValue(self, room_number, column_name, value):
         column = column_name.split(' ')
         if len(column) > 1:
@@ -509,7 +515,7 @@ class functions:
         else:
             print("updateRoom")
 
-    #3
+    #a-3
     def getClasses(self):
         query = "SELECT class_name, class_time FROM Classes"
         result = self.execute_query(query)
@@ -521,6 +527,7 @@ class functions:
         print(result)
         return result
     
+    #3
     def updateClassValue(self, class_name, column_name, newVal):
         column_name_parts = column_name.split(" ")
         realColumnName = column_name_parts[0] + "_" + column_name_parts[1]
@@ -544,6 +551,7 @@ class functions:
             print("class updated")
             return 1
         
+    #3
     def getActiveClasses(self):
         query = "SELECT * FROM Classes WHERE class_time IS NOT NULL"
         result = self.execute_query(query)
@@ -554,7 +562,8 @@ class functions:
         print("Here are the active classes")
         print(result)
         return result
-    
+
+    #3
     def isMemberInClass(self, member_id, class_id):
         query = "SELECT * FROM Register WHERE class_id = '%s' AND member_id = '%s'"
         params = (class_id, member_id)
@@ -563,6 +572,7 @@ class functions:
             return False
         return True
     
+    #3
     def updateClassesRegistration(self, member_id, class_name):
         query = "SELECT class_id FROM Classes WHERE class_name = %s"
         params = (class_name,)
@@ -574,7 +584,7 @@ class functions:
 
         print()
 
-    #4
+    #a-4
     def checkMemberPaid(self, memberId):
         query = "SELECT payment_status FROM Members WHERE member_id = %s"
         parameters = (memberId, )
@@ -590,6 +600,7 @@ class functions:
             print("unpaid")
             return -1
         
+    #4
     def toggleMemberPaymentStatus(self, paymentStatus, firstname, lastname, email):
         memberId = self.get_member_id(firstname, lastname, email)
         query = f"UPDATE Members SET payment_status = %s WHERE member_id = '%s'"
@@ -603,6 +614,7 @@ class functions:
             print(f"Toggled member payment status to {paymentStatus}")
         return result
 
+    #4
     def getMembers(self):
         query = "SELECT m.first_name, m.last_name, m.email, m.payment_status FROM Members m JOIN Oversees o ON m.billing_id = o.billing_id WHERE o.admin_id = '1';"
         
@@ -615,27 +627,3 @@ class functions:
         else:
             print("got members")
             return result
-
-
-
-functions_instance = functions()
-# functions_instance.checkMemberPaid("1")
-# functions_instance.toggleMemberPaymentStatus("1")
-# functions_instance.checkMemberPaid("1")
-# functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")
-#functions_instance.trainerRegistration("Trainer", "1", 6137654321, "t1@gmail.com")
-#functions_instance.adminRegistration("Admin", "1", 6137162534, "a1@gmail.com")
-#functions_instance.updateFirstName(1, "New")
-#functions_instance.updateLastName(1, "newLast")
-#functions_instance.updateEmail(1, "newEmail")
-#functions_instance.updatePhone(1, "1234567890")
-#functions_instance.updateHeight(1, 6)
-#functions_instance.updateWeight(1, 200)
-#functions_instance.addFitnessGoal(1, "reach 250 pounds")
-#functions_instance.addToAchievements(1, "reach 250 pounds")
-# functions_instance.getAllAchievements(1)
-#functions_instance.getHealthStats(1)
-#functions_instance.getExerciseRoutines(1)
-# functions_instance.getMember("Alice", "Johnson")
-#functions_instance.setUpTrainingSession(1, 'Monday', "09:00", "15:00")
-#functions_instance.updateTrainerSessions("Kylian", "Mbappe", "Monday", 11, 13)
