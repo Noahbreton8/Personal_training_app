@@ -30,6 +30,13 @@ class viewMembersPopup(QDialog):
         layout.addWidget(self.achievement_button)
         layout.addWidget(self.achievement)
 
+        self.exercise_button = QPushButton("Give Exercise:")
+        self.exercise = QLineEdit()
+        self.exercise_button.setDisabled(True)
+        self.exercise_button.clicked.connect(self.giveExercise)
+        layout.addWidget(self.exercise_button)
+        layout.addWidget(self.exercise)
+
         self.result_text_edit = QTextEdit()
         layout.addWidget(self.result_text_edit)
 
@@ -37,29 +44,37 @@ class viewMembersPopup(QDialog):
 
     def search(self):
         func = functions()
-        result = func.getMember(self.first_name_input.text(), self.last_name_input.text())
+        self.result = func.getMember(self.first_name_input.text(), self.last_name_input.text())
 
-        if result:
+        if self.result:
             formatted_result = ""
             descriptors = ["First Name", "Last Name", "Phone Number", "Email", "Weight", "Height", "Goal"]
-            for i, item in enumerate(result[0]):
+            for i, item in enumerate(self.result[0]):
                 formatted_result += descriptors[i] + ": " + str(item) + "\n"
                 if descriptors[i] == "Email":
                     self.email = item
             self.result_text_edit.setPlainText(formatted_result)
             self.achievement_button.setEnabled(True)
+            self.exercise_button.setEnabled(True)
         else:
             self.result_text_edit.setPlainText("Member not found.")
             self.achievement_button.setDisabled(True)
+            self.exercise_button.setDisabled(True)
         #display this
 
     def giveAchievement(self):
         func = functions()
-        result = func.addToAchievements(memberId.memberId, self.achievement.text())
+        result = func.addToAchievements(self.result[0][6], self.achievement.text())
         if result != -1:
             QMessageBox.information(self, "Achievement", "Added Achievement!")     
         #display this
             
+    def giveExercise(self):
+        func = functions()
+        result = func.addToExercise(self.result[0][6], self.exercise.text())
+        if result != -1:
+            QMessageBox.information(self, "Exercise", "Added Exercise!")     
+        #display this
 
 
 class manageProfilePopup(QDialog):
@@ -75,7 +90,7 @@ class manageProfilePopup(QDialog):
         self.buttons = []
         self.line_edits = []
 
-        labels = ["Change First Name:", "Change Last Name:", "Change Email:", "Change Phone Number:", "Update Height(cm):", "Update Weight(kg):", "Alter Fitness Goal:"]
+        labels = ["Change First Name:", "Change Last Name:", "Change Email:", "Change Phone Number:", "Update Height(cm):", "Update Weight(kg):", "Add Fitness Goal:"]
         for label_text in labels:
             row_layout = QHBoxLayout()
             label = QLabel(label_text)

@@ -39,11 +39,15 @@ def show_main_window(user_type, first_name, last_name):
                 dashboard_layout.addWidget(QLabel(formatted_exercise))
 
         achiev_result = func.getAllAchievements(memberId=memberId.memberId)
-        dashboard_layout.addWidget(QLabel("Recent Achievment:"+str(achiev_result)) )
+        dashboard_layout.addWidget(QLabel("\nRecent Achievment: "+str(achiev_result)) )
 
         weight_result = func.getWeight(memberId=memberId.memberId)
         if weight_result:
-            dashboard_layout.addWidget(QLabel("Current Weight: " + str(weight_result[0][0]) + " KG"))
+            dashboard_layout.addWidget(QLabel("\nCurrent Weight: " + str(weight_result[0][0]) + " KG"))
+
+        fitness_goal = func.getFitnessGoal(memberId=memberId.memberId)
+        for goal in fitness_goal:
+            dashboard_layout.addWidget(QLabel("\nFitness Goal: "+str(goal[0])) ) 
 
         #add layout to dashboard
         dashboard.setLayout(dashboard_layout)

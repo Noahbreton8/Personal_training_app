@@ -49,7 +49,7 @@ class manageRoomsPopup(QDialog):
         if result is not None:
             self.room_table = QTableWidget()
             self.room_table.setColumnCount(4)
-            self.room_table.setHorizontalHeaderLabels(["Room Number", "Status", "Time Booked", "Reason"])
+            self.room_table.setHorizontalHeaderLabels(["Room Number", "Status", "Booking Time", "Purpose"])
 
             for row, self.room_info in enumerate(result):
                 #slice out roomnumber at 3 and the other values 1,2,4
@@ -93,7 +93,7 @@ class manageRoomsPopup(QDialog):
         func = functions()
         result =func.updateRoomValue(room_number, column_name, value)
         
-        if result != None:
+        if result == None:
             QMessageBox.information(self, "Room", "Room Updated!")  
         else: 
             QMessageBox.warning(self, "Error", "Failed to update room.")
