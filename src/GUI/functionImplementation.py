@@ -185,8 +185,8 @@ class functions:
         return result
     #2
     def addFitnessGoal(self, memberId, goal):
-        query = "UPDATE members SET description = %s WHERE member_id = '%s'"
-        parameters = (goal, memberId)
+        query = "INSERT INTO fitness_goal (member_id, fitness_goal) VALUES ('%s', %s)"
+        parameters = (memberId, goal)
 
         result = self.execute_query(query, parameters)
         if result == -1:
@@ -194,6 +194,16 @@ class functions:
         else:
             print("fitness goal added")
 
+    def getFitnessGoal(self, memberId):
+        query = "SELECT fitness_goal FROM fitness_goal WHERE member_id = '%s'"
+        parameters = (memberId,)
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("member does not exist")
+        else:
+            print("fitness goal gotten")
+        return result
     #3
     def getAllAchievements(self, memberId):
         query = "SELECT achievement FROM Achievement WHERE member_id = '%s'"
@@ -312,7 +322,7 @@ class functions:
     def getMember(self, firstName, lastName):
         firstName = firstName.lower()
         lastName = lastName.lower()
-        query = "SELECT first_name, last_name, phone_number, email, current_weight, height FROM Members WHERE first_name = %s AND last_name = %s"
+        query = "SELECT first_name, last_name, phone_number, email, current_weight, height, member_id FROM Members WHERE first_name = %s AND last_name = %s"
         parameters = (firstName, lastName)
         result = self.execute_query(query, parameters)
         if result == []:
@@ -334,6 +344,17 @@ class functions:
         else:
             print("achievement added")
 
+    #2
+    def addToExercise(self, memberId, exercise_name):
+        query = "INSERT INTO Exercise (name, reps, sets, member_id) VALUES (%s, '%s', '%s', '%s')"
+        parameters = (exercise_name, 8, 3, memberId)
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("member does not exist")
+        else:
+            print("exercise added")
+
     #1
     def getAvailability(self, first_name, last_name):
         trainer_id = self.get_trainer_id(first_name, last_name)
@@ -348,9 +369,9 @@ class functions:
             return result
 
     #1
-    def setAvailability(self, column, day, first_name, last_name, value):
-        trainer_id = self.get_trainer_id(first_name, last_name)
-        query = "UPDATE Availability SET {} = %s WHERE trainer_id = %s and day_of_week = %s".format(column)
+    def setAvailability(self, column, day, trainer_Id, value):
+        trainer_id = trainer_Id
+        query = f"UPDATE Availability SET {column} = %s WHERE trainer_id = %s and day_of_week = %s"
         
         timestamp_value = datetime.strptime(value, "%H:%M").strftime("%Y-%m-%d %H:%M:%S")
         
@@ -359,15 +380,13 @@ class functions:
         result = self.execute_query(query, parameters)
         if result == -1:
             print("failed to set avail")
-        else:
-            print("set avail")
         return result
     
     #1
-    def updateTrainerSessions(self, first_name, last_name, day, start_time, end_time):
+    def updateTrainerSessions(self, trainer_Id, day, start_time, end_time):
         #start_time is an integer representing the hour
 
-        trainer_id = self.get_trainer_id(first_name, last_name)
+        trainer_id = trainer_Id
 
         query = "SELECT status FROM Training_Session WHERE trainer_id = '%s' AND day_of_week = %s ORDER BY session_time ASC"
         params = (trainer_id, day)
@@ -476,7 +495,12 @@ class functions:
     
     #3
     def updateRoomValue(self, room_number, column_name, value):
-        query = f"UPDATE Room_Bookings SET {column_name} = %s WHERE room_number = %s"
+        column = column_name.split(' ')
+        if len(column) > 1:
+            column = column[0] + '_' + column[1]
+        else:
+            column = column_name
+        query = f"UPDATE Room_Bookings SET {column} = %s WHERE room_number = %s"
         parameters = (value, room_number)
 
         result = self.execute_query(query, parameters)
@@ -553,9 +577,11 @@ class functions:
     #4
     def checkMemberPaid(self, memberId):
         query = "SELECT payment_status FROM Members WHERE member_id = %s"
-        parameters = (memberId)
+        parameters = (memberId, )
         result = self.execute_query(query, parameters)
 
+        print(type(result))
+        print(result)
 
         if result[0][0] == 'Paid':
             print("paid")
@@ -593,7 +619,7 @@ class functions:
 
 
 functions_instance = functions()
-functions_instance.checkMemberPaid("1")
+# functions_instance.checkMemberPaid("1")
 # functions_instance.toggleMemberPaymentStatus("1")
 # functions_instance.checkMemberPaid("1")
 # functions_instance.memberRegistration("Member", "1", 6131234567, "m1@gmail.com")

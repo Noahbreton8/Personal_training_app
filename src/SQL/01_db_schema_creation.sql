@@ -40,7 +40,6 @@ CREATE TABLE Room_Bookings (
 );
 
 CREATE TABLE Monitor (
-    -- monitor_id SERIAL PRIMARY KEY,
     admin_id INT,
     equipment_id INT,
     FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
@@ -48,7 +47,6 @@ CREATE TABLE Monitor (
 );
 
 CREATE TABLE Manages (
-    -- manage_id SERIAL PRIMARY KEY,
     admin_id INT,
     booking_id INT,
     FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
@@ -69,7 +67,6 @@ CREATE TABLE Register (
 );
 
 CREATE TABLE Updates (
-    -- update_id SERIAL PRIMARY KEY,
     admin_id INT,
     class_id INT,
     FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
@@ -77,7 +74,6 @@ CREATE TABLE Updates (
 );
 
 CREATE TABLE Oversees (
-    -- oversee_id SERIAL PRIMARY KEY,
     admin_id INT,
     billing_id INT,
     FOREIGN KEY (admin_id) REFERENCES Admins(admin_id),
@@ -85,14 +81,12 @@ CREATE TABLE Oversees (
 );
 
 CREATE TABLE Achievement (
-    -- achievement_id SERIAL PRIMARY KEY,
     member_id INT,
     achievement VARCHAR(255),
     FOREIGN KEY (member_id) REFERENCES Members(member_id)
 );
 
 CREATE TABLE Fitness_Goal (
-    -- fitness_goal_id SERIAL PRIMARY KEY,
     member_id INT,
     fitness_goal VARCHAR(255),
     FOREIGN KEY (member_id) REFERENCES Members(member_id)
@@ -110,7 +104,6 @@ CREATE TABLE Training_Session (
 );
 
 CREATE TABLE Exercise (
-    -- exercise_id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     reps INT,
     sets INT,

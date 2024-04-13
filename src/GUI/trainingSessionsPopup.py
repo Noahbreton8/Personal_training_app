@@ -58,6 +58,9 @@ class setAvail(QDialog):
         success = True
         
         func = functions()
+
+        trainer_id = func.get_trainer_id(self.first_name, self.last_name)
+
         for row in range(self.table.rowCount()):  
             day = self.table.item(row, 0).text()  
             start_time_item = self.table.cellWidget(row, 1) 
@@ -68,10 +71,10 @@ class setAvail(QDialog):
             startHour = int(start_time.split(':')[0]) #gets the hour of start_time as an integer
             endHour = int(end_time.split(':')[0])
             
-            func.updateTrainerSessions(self.first_name, self.last_name, day, startHour, endHour)
+            func.updateTrainerSessions(trainer_id, day, startHour, endHour)
 
-            start_result = func.setAvailability('start_time', day, self.first_name, self.last_name, start_time)
-            end_result = func.setAvailability('end_time', day, self.first_name, self.last_name, end_time)
+            start_result = func.setAvailability('start_time', day, trainer_id, start_time)
+            end_result = func.setAvailability('end_time', day, trainer_id, end_time)
             
             if start_result == -1 or end_result == -1:
                 success = False 

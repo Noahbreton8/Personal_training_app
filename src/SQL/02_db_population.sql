@@ -62,12 +62,17 @@ VALUES
 INSERT INTO Exercise (name, reps, sets, member_id)
 VALUES
 ('Bench', 8, 3, 1),
-('Incline Dumbbell Press', 9, 2, 1);
+('Incline Dumbbell Press', 9, 2, 1),
+('Squats', 10, 3, 1),
+('Dips', 15, 2, 2),
+('Bench', 5, 5, 2),
+('Pushups', 20, 2, 2);
 
 INSERT INTO Fitness_Goal (member_id, fitness_goal)
 VALUES
 (1, 'lose weight and hit 225 on bench'),
 (2, 'gain weight and hit 5 plates on squat');
+
 
 --trainer 1
 INSERT INTO Availability (trainer_id, day_of_week, start_time, end_time)
