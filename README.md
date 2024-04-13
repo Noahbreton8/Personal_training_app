@@ -1,6 +1,8 @@
 # Team71_3005
 
-Marco Toito, Noah Breton, Victor Sandru
+Marco Toito, Noah Breton, Victor Sandru 101231111
+
+https://youtu.be/jyYJctIu8O4
 
 ## Prerequistes
 
@@ -22,7 +24,7 @@ Marco Toito, Noah Breton, Victor Sandru
 -   `psql -U postgres -d final -f src/SQL/02_db_population.sql`
 -   `python3 src/GUI/gymDbGUI.py`
 
-#### With Docker
+#### (DOCKER DOES NOT CURRENTLY WORK!) With Docker
 
 On \*nix systems
 
