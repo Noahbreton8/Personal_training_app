@@ -5,9 +5,9 @@ from datetime import datetime
 import memberId
 
 #postgresql credentials
-DATABASE_NAME = "finalProject"
+DATABASE_NAME = "final"
 DATABASE_USER = "postgres"
-DATABASE_PASSWORD = "student"
+DATABASE_PASSWORD = "postgres"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "5432"
 
@@ -304,6 +304,19 @@ class functions:
             return result
 
         return
+    
+    def unregisterFromTrainingSession(self, member_id, trainer_id):
+        query = "UPDATE Training_Session SET status = 'AVAILABLE' WHERE member_id = '%s' AND trainer_id = '%s'"
+        
+        parameters = (member_id, trainer_id) 
+
+        result = self.execute_query(query, parameters)
+        if result == -1:
+            print("Failed to remove training session")
+            return result
+        else:
+            print("successful delete")
+            return result
 
     ###
     ### TRAINER FUNCTIONS
