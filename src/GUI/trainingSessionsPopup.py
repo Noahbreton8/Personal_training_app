@@ -118,11 +118,15 @@ class bookTrainingPopup(QDialog):
         self.update_button = QPushButton("Update!")
         self.update_button.clicked.connect(self.update_trainer_sessions)
 
+        self.delete_button = QPushButton('Unregister')
+        self.delete_button.clicked.connect(self.unregister)
+
         self.setLayout(self.layout)
 
     def update_select_button_state(self):
         # Enable the button only if one of the radio buttons is selected
         self.select_button.setEnabled(self.trainer1_button.isChecked() or self.trainer2_button.isChecked())
+        self.delete_button.setEnabled(self.trainer1_button.isChecked() or self.trainer2_button.isChecked())
 
     def display_trainer_sessions(self):
         if self.trainer1_button.isChecked():
@@ -201,6 +205,7 @@ class bookTrainingPopup(QDialog):
 
         self.layout.addWidget(self.training_table)
         self.layout.addWidget(self.update_button)
+        self.layout.addWidget(self.delete_button)
 
         return
 
@@ -240,3 +245,13 @@ class bookTrainingPopup(QDialog):
                         return
         return
     
+    def unregister(self):
+        func = functions()
+        returnValue = 0
+        if self.trainer1_button.isChecked():
+            returnValue = func.unregisterFromTrainingSession(memberId.memberId, 1)
+        elif self.trainer2_button.isChecked():
+            returnValue = func.unregisterFromTrainingSession(memberId.memberId, 2)
+
+        if returnValue != -1:
+            QMessageBox.information(self, "Successfully Unregistered!", "Successful Unregistered, exit and come back to see changes!")
